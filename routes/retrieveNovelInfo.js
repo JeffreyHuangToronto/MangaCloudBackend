@@ -4,7 +4,22 @@ const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const url = require("url");
-const client = require("./database"); // Connect to database
+// const client = require("./database"); // Connect to database
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+async function connectDB() {
+    console.log("Connecting to my Database...");
+    try {
+        // Connect to the MongoDB cluster
+        await client.connect();
+        console.log("Connected!");
+        // Make the appropriate DB calls
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+connectDB().catch(console.error);
 const globalvars = require("../Global/variables.json");
 const api_url = globalvars.API_URL;
 /**
