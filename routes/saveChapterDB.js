@@ -6,6 +6,7 @@ const cheerio = require("cheerio");
 const url = require("url");
 const { json } = require("express");
 // const client = require("./database"); // Connect to database
+const { MongoClient, Db } = require("mongodb");
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function connectDB() {
