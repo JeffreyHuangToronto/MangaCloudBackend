@@ -9,7 +9,7 @@ const url = require("url");
 const { MongoClient, Db } = require("mongodb");
 const globalvars = require("../Global/variables.json");
 const api_url = globalvars.API_URL;
-const uri = process.env.MONGODB_URL;
+const uri = "mongodb+srv://Jeffrey:Jeffrey@nam-clutster.rp3ox.mongodb.net/NAMS?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function connectDB() {

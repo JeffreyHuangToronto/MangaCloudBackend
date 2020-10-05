@@ -7,7 +7,7 @@ const url = require("url");
 const { json } = require("express");
 // const client = require("./database"); // Connect to database
 const { MongoClient, Db } = require("mongodb");
-const uri = process.env.MONGODB_URL;
+const uri = "mongodb+srv://Jeffrey:Jeffrey@nam-clutster.rp3ox.mongodb.net/NAMS?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function connectDB() {
