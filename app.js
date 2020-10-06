@@ -7,7 +7,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
 var retrieveNovel = require("./routes/retriveNovel");
 var saveChapterDB = require("./routes/saveChapterDB");
 var retrieveNovelInfo = require("./routes/retrieveNovelInfo");
@@ -27,7 +26,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 // app.use("/getchapter", getChapterRouter);
 app.use("/retrievenovel", retrieveNovel); // POST with name of the novel
 app.use("/savechapterdb", saveChapterDB); //
