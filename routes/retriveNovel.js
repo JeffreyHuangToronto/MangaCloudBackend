@@ -4,11 +4,9 @@ const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const url = require("url");
-// const { CLIENT_RENEG_LIMIT } = require("tls");
-// const client = require("./database"); // Connect to database
 const { MongoClient, Db } = require("mongodb");
-const globalvars = require("../Global/variables.json");
-const api_url = globalvars.API_URL;
+// const globalvars = require("../Global/variables.json");
+const api_url = process.env.API_URL;
 const uri = process.env.MONGODBURI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
