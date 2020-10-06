@@ -6,7 +6,7 @@ const cheerio = require("cheerio");
 const url = require("url");
 // const client = require("./database"); // Connect to database
 const { MongoClient, Db } = require("mongodb");
-const uri = "mongodb+srv://Jeffrey:Jeffrey@nam-clutster.rp3ox.mongodb.net/NAMS?retryWrites=true&w=majority";
+const uri = process.env.MONGODBURI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function connectDB() {
