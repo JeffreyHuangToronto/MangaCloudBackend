@@ -9,7 +9,7 @@ const url = require("url");
 const { MongoClient, Db } = require("mongodb");
 const globalvars = require("../Global/variables.json");
 const api_url = globalvars.API_URL;
-const uri = "mongodb+srv://Jeffrey:Jeffrey@nam-clutster.rp3ox.mongodb.net/NAMS?retryWrites=true&w=majority";
+const uri = process.env.MONGODBURI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function connectDB() {
@@ -109,10 +109,6 @@ router.post("/", async function (req, res, next) {
         await axios
             .post(api_url + "/savechapterdb", body)
             .then((response) => {
-                // console.log(JSON.stringify(response.data));
-                // console.log(JSON.stringify(response.data));
-                // console.log("HEY");
-                // console.log("We have the novel in our database");
                 return JSON.stringify(response.data);
             })
             .catch(function (error) {
@@ -124,10 +120,6 @@ router.post("/", async function (req, res, next) {
         await axios
             .post(api_url + "/savechapterdb", body)
             .then((response) => {
-                // console.log(JSON.stringify(response.data));
-                // console.log(JSON.stringify(response.data));
-                // console.log("HEY");
-                // console.log("We have the novel in our database");
                 return JSON.stringify(response.data);
             })
             .catch(function (error) {
@@ -135,16 +127,8 @@ router.post("/", async function (req, res, next) {
             });
     }
     chapterJSON = JSON.stringify(await parseChapter(novel_title, chapter_num));
-    // console.log(chapterJSON);
-    // console.log("SENDING RESPONSE BACK");
     res.send(chapterJSON);
     res.end();
-
-    // console.log("I'm going to wait here...");
-    // while (!(await novelInDB(novel_title))) {}
-    // while (!(await chapterInDB(novel_title, chapter_num))) {}
-    // console.log("I stopped waiting...");
-    // // Now we have the data get it from the database
 });
 
 module.exports = router;
