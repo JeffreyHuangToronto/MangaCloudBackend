@@ -72,7 +72,7 @@ router.get("/", async function (req, res, next) {
             $("div.post-title.font-title > h5 > a").each(async (index, element) => {
                 // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
                 // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
-                var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
+                var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1].toString();
                 // console.log("Test", index);
 
                 if (novel_title_in_DB != null && !(await recNovelInDB(novel_title_in_DB))) {
@@ -82,7 +82,7 @@ router.get("/", async function (req, res, next) {
             $("div.item-summary > div.post-title.font-title").each(async (index, element) => {
                 // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
                 // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
-                var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
+                var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1].toString();
                 // console.log("Test", index);
 
                 if (novel_title_in_DB != null && !(await recNovelInDB(novel_title_in_DB))) {
