@@ -107,7 +107,7 @@ router.get("/", async function (req, res, next) {
                     if ($(element).attr("href") != null) {
                         var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
                         if (!(await recNovelInDB(novel_title_in_DB))) {
-                            await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                            addNovelToDB($(element).attr("href"), novel_title_in_DB);
                         }
                     }
                 });
@@ -119,7 +119,7 @@ router.get("/", async function (req, res, next) {
                     if ($(element).attr("href") != null) {
                         var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
                         if (!(await recNovelInDB(novel_title_in_DB))) {
-                            await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                            addNovelToDB($(element).attr("href"), novel_title_in_DB);
                         }
                     }
                 });
@@ -131,7 +131,7 @@ router.get("/", async function (req, res, next) {
                     if ($(element).attr("href") != null) {
                         var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
                         if (!(await recNovelInDB(novel_title_in_DB))) {
-                            await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                            addNovelToDB($(element).attr("href"), novel_title_in_DB);
                         }
                     }
                 });
