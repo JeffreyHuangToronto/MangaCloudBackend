@@ -65,37 +65,39 @@ var router = express.Router();
 router.get("/", async function (req, res, next) {
     // const base_novel_url = req.body.url.toString();
     // const novel_title = url.parse(base_novel_url, true).pathname.slice(1, -1).split("/")[1];
-    await axios
-        .get("https://boxnovel.com/novel/?m_orderby=trending")
-        .then(async (response) => {
-            const $ = cheerio.load(response.data); // Load the page
-            $("div.post-title.font-title > h5 > a").each(async (index, element) => {
-                // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
-                // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
-                if ($(element).attr("href") != null) {
-                    var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
-                    // console.log("Test", index);
+    for (var i = 0; i < 64; i++) {
+        await axios
+            .get("https://boxnovel.com/page/" + i + "/?s&post_type=wp-manga&m_orderby=trending")
+            .then(async (response) => {
+                const $ = cheerio.load(response.data); // Load the page
+                $("div.post-title.font-title > h5 > a").each(async (index, element) => {
+                    // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
+                    // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
+                    if ($(element).attr("href") != null) {
+                        var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
+                        // console.log("Test", index);
 
-                    if (!(await recNovelInDB(novel_title_in_DB))) {
-                        await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                        if (!(await recNovelInDB(novel_title_in_DB))) {
+                            await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                        }
                     }
-                }
-            });
-            $("div.item-summary > div.post-title.font-title").each(async (index, element) => {
-                // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
-                // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
-                // console.log("Test", index);
-                if ($(element).attr("href") != null) {
-                    var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
-                    if (!(await recNovelInDB(novel_title_in_DB))) {
-                        await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                });
+                $("div.item-summary > div.post-title.font-title").each(async (index, element) => {
+                    // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
+                    // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
+                    // console.log("Test", index);
+                    if ($(element).attr("href") != null) {
+                        var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
+                        if (!(await recNovelInDB(novel_title_in_DB))) {
+                            await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                        }
                     }
-                }
+                });
+            })
+            .catch((err) => {
+                console.log("Error found:", err);
             });
-        })
-        .catch((err) => {
-            console.log("Error found:", err);
-        });
+    }
     // Now we have the data get it from the database
     // recNovels = JSON.stringify(await getRecommended());
     res.send("Success");
