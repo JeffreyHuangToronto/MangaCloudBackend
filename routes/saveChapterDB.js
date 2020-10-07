@@ -8,21 +8,21 @@ const { json } = require("express");
 // const client = require("./database"); // Connect to database
 const { MongoClient, Db } = require("mongodb");
 const uri = process.env.MONGODBURI;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = require("./database"); // Connect to database
+// async function connectDB() {
+//     console.log("Connecting to my Database...");
+//     try {
+//         // Connect to the MongoDB cluster
+//         await client.connect();
+//         console.log("Connected!");
+//         // Make the appropriate DB calls
+//     } catch (e) {
+//         console.error(e);
+//     }
+// }
 
-async function connectDB() {
-    console.log("Connecting to my Database...");
-    try {
-        // Connect to the MongoDB cluster
-        await client.connect();
-        console.log("Connected!");
-        // Make the appropriate DB calls
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-connectDB().catch(console.error);
+// connectDB().catch(console.error);
 
 const SAVE_ALL_CONTENT = false;
 

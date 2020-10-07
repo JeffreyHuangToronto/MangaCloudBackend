@@ -4,26 +4,26 @@ const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const url = require("url");
-// const client = require("./database"); // Connect to database
+const client = require("./database"); // Connect to database
 const { MongoClient, Db } = require("mongodb");
 const uri = process.env.MONGODBURI;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const api_url = process.env.API_URL;
 
-async function connectDB() {
-    console.log("Connecting to my Database...");
-    try {
-        // Connect to the MongoDB cluster
-        await client.connect();
-        console.log("Connected!");
-        // Make the appropriate DB calls
-    } catch (e) {
-        console.error(e);
-    }
-}
+// async function connectDB() {
+//     console.log("Connecting to my Database...");
+//     try {
+//         // Connect to the MongoDB cluster
+//         await client.connect();
+//         console.log("Connected!");
+//         // Make the appropriate DB calls
+//     } catch (e) {
+//         console.error(e);
+//     }
+// }
 
-connectDB().catch(console.error);
+// connectDB().catch(console.error);
 
 async function novelInDB(novel_title) {
     const db = await client.db("NAMS").collection("novels").findOne({ novel_title: novel_title });

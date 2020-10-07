@@ -8,21 +8,22 @@ const { MongoClient, Db } = require("mongodb");
 // const globalvars = require("../Global/variables.json");
 const api_url = process.env.API_URL;
 const uri = process.env.MONGODBURI;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = require("./database"); // Connect to database
 
-async function connectDB() {
-    console.log("Connecting to my Database...");
-    try {
-        // Connect to the MongoDB cluster
-        await client.connect();
-        console.log("Connected!");
-        // Make the appropriate DB calls
-    } catch (e) {
-        console.error(e);
-    }
-}
+// async function connectDB() {
+//     console.log("Connecting to my Database...");
+//     try {
+//         // Connect to the MongoDB cluster
+//         await client.connect();
+//         console.log("Connected!");
+//         // Make the appropriate DB calls
+//     } catch (e) {
+//         console.error(e);
+//     }
+// }
 
-connectDB().catch(console.error);
+// connectDB().catch(console.error);
 let once = false;
 async function novelInDB(novel_title) {
     // if (!once) {
