@@ -112,7 +112,7 @@ router.post("/", async function (req, res, next) {
                     novel_title: novel_title,
                     total_chapters: 0,
                     summary: [],
-                    cover_url: "",
+                    cover_url: "https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image-300x225.png",
                 };
                 // console.log("------- CHAPTER INFO: -------");
 
