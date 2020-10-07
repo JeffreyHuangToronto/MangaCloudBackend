@@ -110,6 +110,7 @@ router.post("/", async function (req, res, next) {
                 const $ = cheerio.load(response.data); // Load the page
                 novel_details = {
                     novel_title: novel_title,
+                    novel_url: req.body.url,
                     total_chapters: 0,
                     summary: [],
                     cover_url: "https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image-300x225.png",
