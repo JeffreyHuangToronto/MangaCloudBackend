@@ -94,6 +94,17 @@ router.get("/", async function (req, res, next) {
                         }
                     }
                 });
+                $("div.tab-summary > div.post-title > h4").each(async (index, element) => {
+                    // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
+                    // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
+                    // console.log("Test", index);
+                    if ($(element).attr("href") != null) {
+                        var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
+                        if (!(await recNovelInDB(novel_title_in_DB))) {
+                            await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                        }
+                    }
+                });
             })
             .catch((err) => {
                 console.log("Error found:", err);
