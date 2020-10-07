@@ -75,7 +75,7 @@ router.get("/", async function (req, res, next) {
                 var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
                 // console.log("Test", index);
 
-                if (!(await recNovelInDB(novel_title_in_DB))) {
+                if (novel_title_in_DB != null && !(await recNovelInDB(novel_title_in_DB))) {
                     await addNovelToDB($(element).attr("href"), novel_title_in_DB);
                 }
             });
@@ -85,7 +85,7 @@ router.get("/", async function (req, res, next) {
                 var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
                 // console.log("Test", index);
 
-                if (!(await recNovelInDB(novel_title_in_DB))) {
+                if (novel_title_in_DB != null && !(await recNovelInDB(novel_title_in_DB))) {
                     await addNovelToDB($(element).attr("href"), novel_title_in_DB);
                 }
             });
