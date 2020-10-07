@@ -66,6 +66,7 @@ router.get("/", async function (req, res, next) {
     // const base_novel_url = req.body.url.toString();
     // const novel_title = url.parse(base_novel_url, true).pathname.slice(1, -1).split("/")[1];
     for (var i = 0; i < 64; i++) {
+        console.log("Looking at page: ", i);
         await axios
             .get("https://boxnovel.com/page/" + i + "/?s&post_type=wp-manga&m_orderby=trending")
             .then(async (response) => {
