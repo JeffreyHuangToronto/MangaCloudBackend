@@ -24,7 +24,7 @@ const client = require("./database"); // Connect to database
 // connectDB().catch(console.error);
 
 async function getRecommended() {
-    const recommended = await client.db("NAMS").collection("recommended");
+    const recommended = await client.db("NAMS").collection("novels");
     // Novel has to be on our database
 
     var recommendNovels = { novels: [] };

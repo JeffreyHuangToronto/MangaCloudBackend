@@ -41,7 +41,7 @@ async function recNovelInDB(novel_title) {
     query = {
         novel_title: novel_title,
     };
-    const inRec = await client.db("NAMS").collection("recommended").findOne(query);
+    const inRec = await client.db("NAMS").collection("novels").findOne(query);
 
     if (!inRec) {
         // console.log("Novel not in rec");
@@ -57,7 +57,7 @@ async function addNovelToDB(novel_url, novel_title_in_DB) {
         novel_title: novel_title_in_DB,
         novel_url: novel_url,
     };
-    await client.db("NAMS").collection("recommended").insertOne(novel_details);
+    await client.db("NAMS").collection("novels").insertOne(novel_details);
     // console.log("Should be added");
 }
 
@@ -81,11 +81,7 @@ router.get("/", async function (req, res, next) {
 
                         if (!(await recNovelInDB(novel_title_in_DB))) {
                             await addNovelToDB($(element).attr("href"), novel_title_in_DB);
-                        } else {
-                            console.log("It's 1st option. in novel");
                         }
-                    } else {
-                        console.log("It's 1st option. null");
                     }
                 });
                 $("div.item-summary > div.post-title.font-title").each(async (index, element) => {
@@ -96,11 +92,7 @@ router.get("/", async function (req, res, next) {
                         var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
                         if (!(await recNovelInDB(novel_title_in_DB))) {
                             await addNovelToDB($(element).attr("href"), novel_title_in_DB);
-                        } else {
-                            console.log("It's 2st option. in novel");
                         }
-                    } else {
-                        console.log("It's 2nd option. null");
                     }
                 });
                 $("div.post-title > h4 > a").each(async (index, element) => {
@@ -112,11 +104,19 @@ router.get("/", async function (req, res, next) {
                         var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
                         if (!(await recNovelInDB(novel_title_in_DB))) {
                             await addNovelToDB($(element).attr("href"), novel_title_in_DB);
-                        } else {
-                            console.log("It's 3st option. in novel");
                         }
-                    } else {
-                        console.log("It's 3rd option. null");
+                    }
+                });
+                $("div.post-title > h5 > a").each(async (index, element) => {
+                    // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
+                    // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
+                    // console.log("Test", index);
+                    console.log($(element).attr("href"));
+                    if ($(element).attr("href") != null) {
+                        var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
+                        if (!(await recNovelInDB(novel_title_in_DB))) {
+                            await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                        }
                     }
                 });
             })
