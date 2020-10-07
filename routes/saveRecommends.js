@@ -54,7 +54,7 @@ async function addNovelToDB(novel_url, novel_title_in_DB) {
     // console.log(nTitleDB);
     novel_details = {
         novel_title: novel_title_in_DB,
-        novel_url: novel_url,
+        novel_url: novel_url.toString(),
     };
     await client.db("NAMS").collection("recommended").insertOne(novel_details);
     // console.log("Should be added");
