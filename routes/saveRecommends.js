@@ -7,6 +7,7 @@ const url = require("url");
 const client = require("./database"); // Connect to database
 const { MongoClient, Db } = require("mongodb");
 const uri = process.env.MONGODBURI;
+const api_url = process.env.API_URL;
 // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 // const client = require("./database"); // Connect to database
 
