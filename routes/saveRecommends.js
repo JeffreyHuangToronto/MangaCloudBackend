@@ -80,6 +80,8 @@ router.get("/", async function (req, res, next) {
 
                         if (!(await recNovelInDB(novel_title_in_DB))) {
                             await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                        } else {
+                            console.log("It's 1st option. in novel");
                         }
                     } else {
                         console.log("It's 1st option. null");
@@ -93,6 +95,8 @@ router.get("/", async function (req, res, next) {
                         var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
                         if (!(await recNovelInDB(novel_title_in_DB))) {
                             await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                        } else {
+                            console.log("It's 2st option. in novel");
                         }
                     } else {
                         console.log("It's 2nd option. null");
@@ -106,6 +110,8 @@ router.get("/", async function (req, res, next) {
                         var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
                         if (!(await recNovelInDB(novel_title_in_DB))) {
                             await addNovelToDB($(element).attr("href"), novel_title_in_DB);
+                        } else {
+                            console.log("It's 3st option. in novel");
                         }
                     } else {
                         console.log("It's 3rd option. null");
