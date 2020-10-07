@@ -53,11 +53,25 @@ async function recNovelInDB(novel_title) {
 
 async function addNovelToDB(novel_url, novel_title_in_DB) {
     // console.log(nTitleDB);
-    novel_details = {
-        novel_title: novel_title_in_DB,
-        novel_url: novel_url,
+    // novel_details = {
+    //     novel_title: novel_title_in_DB,
+    //     novel_url: novel_url,
+    // };
+
+    body = {
+        url: novel_url,
+        chapter_num: 0,
     };
-    await client.db("NAMS").collection("novels").insertOne(novel_details);
+
+    await axios
+        .post(api_url + "/savechapterdb", body)
+        .then((response) => {
+            return JSON.stringify(response.data);
+        })
+        .catch(function (error) {
+            console.log("Error", error);
+        });
+    // await client.db("NAMS").collection("novels").insertOne(novel_details);
     // console.log("Should be added");
 }
 
@@ -66,7 +80,8 @@ var router = express.Router();
 router.get("/", async function (req, res, next) {
     // const base_novel_url = req.body.url.toString();
     // const novel_title = url.parse(base_novel_url, true).pathname.slice(1, -1).split("/")[1];
-    for (var i = 0; i < 64; i++) {
+    const PAGES = 64;
+    for (var i = 0; i < 2; i++) {
         console.log("Looking at page: ", i);
         await axios
             .get("https://boxnovel.com/page/" + i + "/?s&post_type=wp-manga&m_orderby=trending")
