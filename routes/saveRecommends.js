@@ -102,7 +102,7 @@ router.get("/", async function (req, res, next) {
                         console.log("It's 2nd option. null");
                     }
                 });
-                $("div.post-title > h4").each(async (index, element) => {
+                $("div.post-title > h4 > a").each(async (index, element) => {
                     // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
                     // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
                     // console.log("Test", index);
