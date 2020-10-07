@@ -81,6 +81,8 @@ router.get("/", async function (req, res, next) {
                         if (!(await recNovelInDB(novel_title_in_DB))) {
                             await addNovelToDB($(element).attr("href"), novel_title_in_DB);
                         }
+                    } else {
+                        console.log("It's 1st option. null");
                     }
                 });
                 $("div.item-summary > div.post-title.font-title").each(async (index, element) => {
@@ -92,9 +94,11 @@ router.get("/", async function (req, res, next) {
                         if (!(await recNovelInDB(novel_title_in_DB))) {
                             await addNovelToDB($(element).attr("href"), novel_title_in_DB);
                         }
+                    } else {
+                        console.log("It's 2nd option. null");
                     }
                 });
-                $("div.tab-summary > div.post-title > h4").each(async (index, element) => {
+                $("div.post-title > h4").each(async (index, element) => {
                     // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
                     // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
                     // console.log("Test", index);
@@ -103,6 +107,8 @@ router.get("/", async function (req, res, next) {
                         if (!(await recNovelInDB(novel_title_in_DB))) {
                             await addNovelToDB($(element).attr("href"), novel_title_in_DB);
                         }
+                    } else {
+                        console.log("It's 3rd option. null");
                     }
                 });
             })
