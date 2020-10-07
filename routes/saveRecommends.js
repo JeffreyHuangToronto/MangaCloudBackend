@@ -106,6 +106,7 @@ router.get("/", async function (req, res, next) {
                     // novel_details.novels.push({ novel_title: $(element).text(), novel_url: $(element).attr("href") });
                     // console.log(`Title: ${$(element).text().trim()} HREF: ${$(element).attr("href")}`);
                     // console.log("Test", index);
+                    console.log($(element).attr("href"));
                     if ($(element).attr("href") != null) {
                         var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
                         if (!(await recNovelInDB(novel_title_in_DB))) {
