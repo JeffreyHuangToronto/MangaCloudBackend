@@ -46,8 +46,8 @@ router.get("/", async function (req, res, next) {
     // const novel_title = url.parse(base_novel_url, true).pathname.slice(1, -1).split("/")[1];
 
     // Now we have the data get it from the database
-    recNovels = JSON.stringify(await getRecommended());
-    res.send(recNovels);
+    recNovels = await getRecommended();
+    res.json(recNovels);
     // res.send("Test");
 });
 
