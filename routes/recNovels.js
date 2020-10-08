@@ -32,7 +32,7 @@ async function getRecommended() {
     await novels.find().forEach((cursor) => {
         // console.log(cursor);
         // console.log("CURSOR INFO:", cursor.novel_title:, cursor.novel_url:);
-        console.log(`Title: ${cursor.novel_title} Novel URL: ${cursor.novel_url} Cover_URL: ${cursor.cover_url}`);
+        // console.log(`Title: ${cursor.novel_title} Novel URL: ${cursor.novel_url} Cover_URL: ${cursor.cover_url}`);
         novelsList.novels.push({ title: cursor.novel_title, novel_url: cursor.novel_url, cover_url: cursor.cover_url });
     });
     // console.log("Rec Object", recommendNovels);
