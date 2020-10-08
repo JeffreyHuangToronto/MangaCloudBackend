@@ -24,12 +24,12 @@ const client = require("./database"); // Connect to database
 // connectDB().catch(console.error);
 
 async function getRecommended() {
-    const recommended = await client.db("NAMS").collection("novels");
+    const novels = await client.db("NAMS").collection("novels");
     // Novel has to be on our database
 
     var novelsList = { novels: [] };
 
-    await novelsList.find().forEach((cursor) => {
+    await novels.find().forEach((cursor) => {
         // console.log(cursor);
         // console.log("CURSOR INFO:", cursor.novel_title:, cursor.novel_url:);
         console.log(`Title: ${cursor.novel_title} Novel URL: ${cursor.novel_url} Cover_URL: ${cursor.cover_url}`);
