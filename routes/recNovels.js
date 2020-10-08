@@ -36,7 +36,7 @@ async function getRecommended() {
         novelsList.novels.push({ title: cursor.novel_title, novel_url: cursor.novel_url, cover_url: cursor.cover_url });
     });
     // console.log("Rec Object", recommendNovels);
-    return recommendNovels;
+    return novelsList;
 }
 
 var router = express.Router();
