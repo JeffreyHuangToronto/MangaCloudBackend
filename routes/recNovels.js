@@ -27,12 +27,12 @@ async function getRecommended() {
     const recommended = await client.db("NAMS").collection("novels");
     // Novel has to be on our database
 
-    var recommendNovels = { novels: [] };
+    var novelsList = { novels: [] };
 
-    await recommended.find().forEach((cursor) => {
+    await novelsList.find().forEach((cursor) => {
         // console.log(cursor);
         // console.log("CURSOR INFO:", cursor.novel_title:, cursor.novel_url:);
-        recommendNovels.novels.push({ title: cursor.novel_title, novel_url: cursor.novel_url });
+        novelsList.novels.push({ title: cursor.novel_title, novel_url: cursor.novel_url, cover_url: cursor.cover_url });
     });
     // console.log("Rec Object", recommendNovels);
     return recommendNovels;
