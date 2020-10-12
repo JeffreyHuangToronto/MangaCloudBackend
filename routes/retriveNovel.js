@@ -8,7 +8,7 @@ const client = require("./database"); // Connect to database
 
 let once = false;
 async function novelInDB(novel_title) {
-    const db = await client.db("NAMS").collection("novels").findOne({ novel_title: novel_title });
+    const db = await client.db("NAMS").collection("novels").findOne({ db_novel_title: novel_title });
     if (db == null) {
         if (!once) {
             once = true;
@@ -25,12 +25,12 @@ async function novelInDB(novel_title) {
 
 async function parseChapter(novel_title, chapter_num) {
     query = {
-        novel_title: novel_title,
+        db_novel_title: novel_title,
         chapter: chapter_num,
     };
     console.log(novel_title);
     if (chapter_num == 0) {
-        const novel = await client.db("NAMS").collection("novels").findOne({ novel_title: novel_title });
+        const novel = await client.db("NAMS").collection("novels").findOne({ db_novel_title: novel_title });
         return {
             content: novel.summary,
             chapter_title: "Novel Title: " + novel_title + "\nTotal Chapters: " + novel.total_chapters,
@@ -49,7 +49,7 @@ async function parseChapter(novel_title, chapter_num) {
 async function chapterInDB(novel_title, chapter_num) {
     // console.log(`Checking for chapter ${chapter_num} from database...`);
     query = {
-        novel_title: novel_title,
+        db_novel_title: novel_title,
         chapter: chapter_num,
     };
 
