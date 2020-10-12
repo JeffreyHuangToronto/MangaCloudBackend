@@ -5,12 +5,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const url = require("url");
 const client = require("./database"); // Connect to database
-const { MongoClient, Db } = require("mongodb");
-const uri = process.env.MONGODBURI;
-// const api_url = process.env.API_URL;
-const api_url = "http://250e62977aa7.ngrok.io";
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-// const client = require("./database"); // Connect to database
+const api_url = process.env.API_URL;
 
 async function recNovelInDB(novel_title) {
     query = {
@@ -57,7 +52,6 @@ var router = express.Router();
 
 router.get("/", async function (req, res, next) {
     const PAGES = 64;
-    // const PAGES = 1;
     for (var i = 0; i < PAGES; i++) {
         console.log("Looking at page: ", i);
         await axios

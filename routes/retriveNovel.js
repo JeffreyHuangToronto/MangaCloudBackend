@@ -2,39 +2,15 @@
 
 const express = require("express");
 const axios = require("axios");
-const cheerio = require("cheerio");
 const url = require("url");
-const { MongoClient, Db } = require("mongodb");
-// const globalvars = require("../Global/variables.json");
-// const api_url = process.env.API_URL;
-const api_url = "http://250e62977aa7.ngrok.io";
-// const uri = process.env.MONGODBURI;
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const api_url = process.env.API_URL;
 const client = require("./database"); // Connect to database
 
-// async function connectDB() {
-//     console.log("Connecting to my Database...");
-//     try {
-//         // Connect to the MongoDB cluster
-//         await client.connect();
-//         console.log("Connected!");
-//         // Make the appropriate DB calls
-//     } catch (e) {
-//         console.error(e);
-//     }
-// }
-
-// connectDB().catch(console.error);
 let once = false;
 async function novelInDB(novel_title) {
-    // if (!once) {
-    //   console.log(`Checking if ${novel_title} is in our database (RETRIEVENOVEL)...`);
-    // }
-
     const db = await client.db("NAMS").collection("novels").findOne({ novel_title: novel_title });
     if (db == null) {
         if (!once) {
-            // console.log(`Novel is not within our database.`);
             once = true;
         }
 
@@ -102,10 +78,6 @@ router.post("/", async function (req, res, next) {
 
     // Check if we have novel data in our database
     if (!(await novelInDB(novel_title))) {
-        // If not send request to webscrape it
-        // console.log("We don't have the novel in our database... (SENDING SAVE REQUEST)");
-        // console.log(base_novel_url);
-
         await axios
             .post(api_url + "/savechapterdb", body)
             .then((response) => {
@@ -115,7 +87,6 @@ router.post("/", async function (req, res, next) {
                 console.log("Error", error);
             });
     }
-    // console.log("We have the novel in our database");
     if (!(await chapterInDB(novel_title, chapter_num))) {
         await axios
             .post(api_url + "/savechapterdb", body)

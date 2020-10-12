@@ -4,14 +4,11 @@ const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const url = require("url");
-const { MongoClient, Db } = require("mongodb");
-const uri = process.env.MONGODBURI;
 const client = require("./database"); // Connect to database
 
 async function getRecommended() {
     const novels = await client.db("NAMS").collection("novels");
     // Novel has to be on our database
-
     var novelsList = { novels: [] };
 
     await novels.find().forEach((cursor) => {

@@ -5,7 +5,7 @@
  * @format
  */
 const { MongoClient, Db } = require("mongodb");
-const uri = process.env.MONGODBURI || "mongodb+srv://Jeffrey:Jeffrey@nam-clutster.rp3ox.mongodb.net/NAMS?retryWrites=true&w=majority";
+const uri = process.env.MONGODBURI;
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
