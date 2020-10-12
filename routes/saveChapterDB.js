@@ -32,7 +32,7 @@ async function novelInDB(novel_title) {
 
 async function chapterInDB(novel_title, chapter_num) {
     query = {
-        novel_title: novel_title,
+        db_novel_title: novel_title,
         chapter: chapter_num,
     };
 
