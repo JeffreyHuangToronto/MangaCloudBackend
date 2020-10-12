@@ -4,71 +4,33 @@ const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const url = require("url");
-const { json } = require("express");
-// const client = require("./database"); // Connect to database
-const { MongoClient, Db } = require("mongodb");
-const uri = process.env.MONGODBURI;
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const client = require("./database"); // Connect to database
-// async function connectDB() {
-//     console.log("Connecting to my Database...");
-//     try {
-//         // Connect to the MongoDB cluster
-//         await client.connect();
-//         console.log("Connected!");
-//         // Make the appropriate DB calls
-//     } catch (e) {
-//         console.error(e);
-//     }
-// }
-
-// connectDB().catch(console.error);
 
 const SAVE_ALL_CONTENT = false;
 
 const schema = {
     novel_title: "",
+    db_novel_title: "",
     cover_url: "",
     total_chapters: 0,
     summary: [],
 };
 
-/**
- * ADD NOVEL ENTRY TO DATABASE
- * @param {String} novel_title Novel Title
- * @param {String} summary Novel Summary
- * @param {String} cover_url Novel Cover URL
- */
 async function addNewNovel(novel_details) {
     //   Create a novel entry
-
     const db = await client.db("NAMS").collection("novels").insertOne(novel_details);
     console.log(`New novel added to database!: ${novel_details.novel_title}`);
 }
 
-let once = false;
-/**
- *
- * @param {String} novel_title Novel title
- */
 async function novelInDB(novel_title) {
-    const db = await client.db("NAMS").collection("novels").findOne({ novel_title: novel_title });
+    const db = await client.db("NAMS").collection("novels").findOne({ db_novel_title: novel_title });
     if (db == null) {
-        if (!once) {
-            // console.log(`Novel is not within our database.`);
-            once = true;
-        }
         return false;
-    }
-    if (!once) {
-        // console.log(`It is within our database.`);
-        once = true;
     }
     return true;
 }
 
 async function chapterInDB(novel_title, chapter_num) {
-    // console.log(`Checking for chapter ${chapter_num} from database...`);
     query = {
         novel_title: novel_title,
         chapter: chapter_num,
@@ -77,15 +39,15 @@ async function chapterInDB(novel_title, chapter_num) {
     const chapter = await client.db("NAMS").collection("chapters").findOne(query);
 
     if (!chapter) {
-        // console.log("Chapter is not within our database.");
+        // The chapter is not in our database.
         return false;
     }
-    // console.log("Found Chapter in our database");
+    // The chapter is in our database.
     return true;
 }
 
 async function addChapterDetails(chapt, chapter_num) {
-    // console.log("Adding Chapter Details To DB...");
+    // Adding
 
     const chapter_details = {
         novel_title: chapt.novel_title,
@@ -99,24 +61,24 @@ async function addChapterDetails(chapt, chapter_num) {
 var router = express.Router();
 
 router.post("/", async function (req, res, next) {
-    const novel_title = url.parse(req.body.url, true).pathname.split("/")[2];
+    const db_novel_title = url.parse(req.body.url, true).pathname.split("/")[2];
     const chapter_num = req.body.chapter_num;
     // Check if we need to add to database
-
-    if (!(await novelInDB(novel_title))) {
+    console.log(req.body);
+    if (!(await novelInDB(db_novel_title))) {
         await axios
             .get(url.parse(req.body.url.toString(), true))
             .then(async (response) => {
                 const $ = cheerio.load(response.data); // Load the page
                 novel_details = {
-                    novel_title: novel_title,
+                    novel_title: req.body.novel_title,
+                    db_novel_title: db_novel_title,
                     novel_url: req.body.url,
                     total_chapters: 0,
                     summary: [],
                     cover_url: "https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image-300x225.png",
                 };
-                // console.log("------- CHAPTER INFO: -------");
-
+                // -- Chapter Info -- //
                 // Get Total Chapters
                 novel_details.total_chapters = Number($(".wp-manga-chapter").first().text().trim().split(" ")[1]);
 
@@ -130,7 +92,7 @@ router.post("/", async function (req, res, next) {
                     novel_details.cover_url = $(element).attr("src");
                 });
 
-                // console.log("------- CHAPTER INFO END: -------");
+                // -- Chapter Info End -- //
                 await addNewNovel(novel_details);
             })
             .catch((err) => {
@@ -139,27 +101,28 @@ router.post("/", async function (req, res, next) {
     }
     // We now have a database entry
     // Time to add chapters i < schema.total_chapters + 1
-    while (!(await novelInDB(novel_title))) {}
+    while (!(await novelInDB(db_novel_title))) {}
     let chapter_url;
     if (SAVE_ALL_CONTENT) {
         for (let i = 1; i < schema.total_chapters + 1; i++) {
             chapter_url = req.body.url.toString() + "/chapter-" + i;
-            await saveChapter(chapter_url, chapter_num, novel_title);
+            await saveChapter(chapter_url, chapter_num, db_novel_title);
         }
     } else {
         chapter_url = req.body.url.toString() + "/chapter-" + chapter_num;
-        await saveChapter(chapter_url, chapter_num, novel_title);
+        await saveChapter(chapter_url, chapter_num, db_novel_title);
     }
 
-    res.send(JSON.stringify(await parseChapter(novel_title, chapter_num)));
+    res.send(JSON.stringify(await parseChapter(db_novel_title, chapter_num)));
     // res.end();
 });
 
-async function parseChapter(novel_title, chapter_num) {
-    const chapter = await client.db("NAMS").collection("chapters").findOne({ novel_title: novel_title, chapter: chapter_num });
+async function parseChapter(db_novel_title, chapter_num) {
+    const chapter = await client.db("NAMS").collection("chapters").findOne({ db_novel_title: db_novel_title, chapter: chapter_num });
     // Novel has to be on our database
     if (chapter_num == 0) {
-        const novel = await client.db("NAMS").collection("novels").findOne({ novel_title: novel_title });
+        // Summary
+        const novel = await client.db("NAMS").collection("novels").findOne({ db_novel_title: db_novel_title });
         return {
             content: novel.summary,
             chapter_title: novel.total_chapters,
@@ -171,10 +134,10 @@ async function parseChapter(novel_title, chapter_num) {
     };
 }
 
-async function saveChapter(chapter_url, chapter_num, novel_title) {
+async function saveChapter(chapter_url, chapter_num, db_novel_title) {
     // The novel url base no /chapter-1/
 
-    if (!(await chapterInDB(novel_title, chapter_num))) {
+    if (!(await chapterInDB(db_novel_title, chapter_num))) {
         // Chapter is not in database
         await axios
             .get(url.parse(chapter_url, true))
@@ -182,7 +145,7 @@ async function saveChapter(chapter_url, chapter_num, novel_title) {
                 const $ = cheerio.load(response.data); // Load the page
 
                 chapterObject = {
-                    novel_title: novel_title,
+                    novel_title: db_novel_title,
                     chapter_title: "",
                     paragraphs: [],
                 };

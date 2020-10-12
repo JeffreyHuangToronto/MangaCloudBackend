@@ -6,8 +6,9 @@ const cheerio = require("cheerio");
 const url = require("url");
 const { MongoClient, Db } = require("mongodb");
 // const globalvars = require("../Global/variables.json");
-const api_url = process.env.API_URL;
-const uri = process.env.MONGODBURI;
+// const api_url = process.env.API_URL;
+const api_url = "http://250e62977aa7.ngrok.io";
+// const uri = process.env.MONGODBURI;
 // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const client = require("./database"); // Connect to database
 
@@ -64,7 +65,7 @@ async function parseChapter(novel_title, chapter_num) {
     if (chapter == null) return { content: ["", "..."], chapter_title: `Chapter ${chapter_num}: Not Found` };
     return {
         content: chapter.content,
-        chapter_title: chapter.chapter_title,
+        chapter_title: `Chapter ${chapter_num}: ` + chapter.chapter_title,
         // total_chapters: chapter.total_chapters,
     };
 }
