@@ -7,11 +7,20 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
-var retrieveNovel = require("./routes/retriveNovel");
-var saveChapterDB = require("./routes/saveChapterDB");
-var retrieveNovelInfo = require("./routes/retrieveNovelInfo");
-var recNovels = require("./routes/recNovels");
-var saveRecommends = require("./routes/saveRecommends");
+// var retrieveNovel = require("./routes/retriveNovel");
+// var saveChapterDB = require("./routes/saveChapterDB");
+// var retrieveNovelInfo = require("./routes/retrieveNovelInfo");
+// var recNovels = require("./routes/recNovels");
+// var saveRecommends = require("./routes/saveRecommends");
+
+// New System
+var DATABASE_SAVE_NOVEL = require("./routes/Database/Save/saveNovel");
+var DATABASE_SAVE_CHAPTER = require("./routes/Database/Save/saveChapter");
+var DATABASE_GET_NOVEL_LIST = require("./routes/Database/Retrieve/getNovelList");
+var DATABASE_GET_NOVEL = require("./routes/Database/Retrieve/getNovel");
+
+var BOXNOVEL_SCRAPE_NOVEL_DETAILS = require("./routes/Boxnovel Scraper/scrapeNovelDetails");
+var BOXNOVEL_SCRAPE_ALL_NOVELS = require("./routes/Boxnovel Scraper/scrapeAllNovels");
 
 var app = express();
 
@@ -26,12 +35,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-// app.use("/getchapter", getChapterRouter);
-app.use("/retrievenovel", retrieveNovel); // POST with name of the novel
-app.use("/savechapterdb", saveChapterDB); //
-app.use("/retrievenovelinfo", retrieveNovelInfo); //
-app.use("/recNovels", recNovels); //
-app.use("/saveRecommends", saveRecommends); //
+
+// New System
+app.use("/DATABASE/SAVENOVEL", DATABASE_SAVE_NOVEL);
+app.use("/DATABASE/SAVECHAPTER", DATABASE_SAVE_CHAPTER);
+app.use("/DATABASE/GETNOVELLIST", DATABASE_GET_NOVEL_LIST);
+app.use("/DATABASE/GETNOVEL", DATABASE_GET_NOVEL);
+
+app.use("/SCRAPE/BOXNOVEL/ALLNOVELS", BOXNOVEL_SCRAPE_ALL_NOVELS);
+app.use("/SCRAPE/BOXNOVEL/NOVELDETAILS", BOXNOVEL_SCRAPE_NOVEL_DETAILS);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
