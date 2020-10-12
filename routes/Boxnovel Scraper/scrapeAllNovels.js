@@ -5,7 +5,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const url = require("url");
 
-const api_url = process.env.API_URL || "http://9f31805010ca.ngrok.io";
+const api_url = process.env.API_URL;
 
 var router = express.Router();
 
