@@ -11,6 +11,7 @@ async function collectDetails($, novel_url) {
     var body = {
         _id: "",
         novel_title: "",
+        novel_url: novel_url,
         cover_url: "",
         total_chapters: 0,
         summary: [],
@@ -69,6 +70,7 @@ async function collectDetails($, novel_url) {
  *  Novel URL: novel_url (https://boxnovel.com/novel/a-valiant-life/)
  */
 router.post("/", async function (req, res, next) {
+    novel_url = req.body.novel_url;
     if (novel_url == undefined || novel_url == null || novel_url == "" || typeof novel_url != "string") {
         res.end("No URL Provided");
         console.log("BAD URL PROVIDED");

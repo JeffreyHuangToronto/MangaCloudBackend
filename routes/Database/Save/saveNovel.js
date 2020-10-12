@@ -7,11 +7,12 @@ const client = require("../connectDatabase"); // Connect to database
  * This function will save a new novel if it is not in the database and will check if there is any new chapters
  * then it will update the chapter count.
  */
-async function saveNewNovel(novel_title, cover_url, total_chapters, summary, _id) {
+async function saveNewNovel(novel_title, cover_url, total_chapters, summary, _id, novel_url) {
     // Setting our template to hold novel details
     var DATABASE_NOVEL_DETAILS = {
         _id: _id,
         novel_title: novel_title,
+        novel_url: novel_url,
         cover_url: cover_url,
         total_chapters: total_chapters,
         summary: summary,
@@ -48,9 +49,9 @@ var router = express.Router();
  *  Summary: summary[]
  **/
 router.post("/", async function (req, res, next) {
-    const { novel_title, cover_url, total_chapters, summary, _id } = req.body;
+    const { novel_title, cover_url, total_chapters, summary, _id, novel_url } = req.body;
 
-    await saveNewNovel(novel_title, cover_url, total_chapters, summary, _id);
+    await saveNewNovel(novel_title, cover_url, total_chapters, summary, _id, novel_url);
 
     res.send("Request recieved successfully.");
     res.end();
