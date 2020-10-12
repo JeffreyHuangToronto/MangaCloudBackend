@@ -3,7 +3,7 @@
 const express = require("express");
 const axios = require("axios");
 const url = require("url");
-const api_url = process.env.API_URL || "http://250e62977aa7.ngrok.io";
+const api_url = process.env.API_URL || "http://9f31805010ca.ngrok.io";
 // const client = require("./Database/database"); // Connect to database
 const client = require("./database/database");
 

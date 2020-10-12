@@ -1,4 +1,5 @@
 /** @format */
+// @TODO
 
 const express = require("express");
 const axios = require("axios");
@@ -13,20 +14,6 @@ const schema = {
     total_chapters: 0,
     summary: [],
 };
-
-async function addNewNovel(novel_details) {
-    //   Create a novel entry
-    const db = await client.db("NAMS").collection("novels").insertOne(novel_details);
-    console.log(`New novel added to database!: ${novel_details.novel_title}`);
-}
-
-async function novelInDB(novel_title) {
-    const db = await client.db("NAMS").collection("novels").findOne({ db_novel_title: novel_title });
-    if (db == null) {
-        return false;
-    }
-    return true;
-}
 
 async function chapterInDB(novel_title, chapter_num) {
     query = {

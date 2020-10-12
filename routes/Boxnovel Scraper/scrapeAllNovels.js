@@ -5,60 +5,35 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const url = require("url");
 
+const api_url = process.env.API_URL || "http://9f31805010ca.ngrok.io";
+
 var router = express.Router();
 
 router.get("/", async function (req, res, next) {
-    const PAGES = 64; // Manually Found
-    for (var i = 0; i < PAGES; i++) {
+    const PAGES = 63; // Manually Found
+    for (var i = 0; i <= PAGES; i++) {
+        console.log("Looking at page", i);
         await axios
-            .get("https://boxnovel.com/page/" + i + "/?s&post_type=wp-manga&m_orderby=alphabet")
+            .get(`https://boxnovel.com/novel/page/${i}/?m_orderby=alphabet`)
             .then(async (response) => {
                 const $ = cheerio.load(response.data); // Load the page
-
-                $("div.post-title.font-title > h5 > a").each(async (index, element) => {
-                    if ($(element).attr("href") != null) {
-                        var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
-                        if (!(await recNovelInDB(novel_title_in_DB))) {
-                            await addNovelToDB($(element).attr("href"), novel_title_in_DB, novel_title);
-                        }
-                    }
-                });
-                // $("div.item-summary > div.post-title.font-title").each(async (index, element) => {
-                //     if ($(element).attr("href") != null) {
-                //         var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
-                //         var novel_title = $(element).text();
-                //         console.log(novel_title);
-                //         if (!(await recNovelInDB(novel_title_in_DB))) {
-                //             addNovelToDB($(element).attr("href"), novel_title_in_DB, novel_title);
-                //         }
-                //     }
-                // });
-                $("div.post-title > h4 > a").each(async (index, element) => {
-                    if ($(element).attr("href") != null) {
-                        var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
-                        var novel_title = $(element).text();
-                        console.log(novel_title);
-                        if (!(await recNovelInDB(novel_title_in_DB))) {
-                            addNovelToDB($(element).attr("href"), novel_title_in_DB, novel_title);
-                        }
-                    }
-                });
                 $("div.post-title > h5 > a").each(async (index, element) => {
                     if ($(element).attr("href") != null) {
-                        var novel_title_in_DB = url.parse($(element).attr("href"), true).pathname.slice(1).split("/")[1];
-                        var novel_title = $(element).text();
-                        console.log(novel_title);
-                        if (!(await recNovelInDB(novel_title_in_DB))) {
-                            addNovelToDB($(element).attr("href"), novel_title_in_DB, novel_title);
-                        }
+                        const body = {
+                            novel_url: $(element).attr("href"),
+                        };
+                        // console.log("Sending Save:", body.novel_url);
+                        await axios.post(api_url + "/scrape/boxnovel/noveldetails", body).catch(function (error) {
+                            console.log("[ScrapeAllNovels] Error found while sending request to scrape novel details.");
+                        });
                     }
                 });
             })
             .catch((err) => {
-                console.log("Error found:", err);
+                console.log("[ScrapeAllNovels] Error found while trying to scrape all the novels from Boxnovel.");
             });
     }
-    res.send("Success");
+    res.send("Received!");
 });
 
 module.exports = router;

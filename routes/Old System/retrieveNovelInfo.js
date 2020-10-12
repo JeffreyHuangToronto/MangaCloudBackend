@@ -10,7 +10,7 @@ const client = require("./database"); // Connect to database
 // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // const api_url = process.env.API_URL;
-const api_url = "http://250e62977aa7.ngrok.io";
+const api_url = "http://9f31805010ca.ngrok.io";
 
 async function novelInDB(novel_title) {
     const db = await client.db("NAMS").collection("novels").findOne({ novel_title: novel_title });
