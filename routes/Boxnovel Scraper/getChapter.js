@@ -20,7 +20,7 @@ async function getChapterDetails(novel_url, chapter_number) {
 
     const queryChapter = await client.db("NAMS").collection("CHAPTERS").findOne({ _id: DATABASE_CHAPTER_DETAILS._id });
     if (queryChapter == null) {
-        let chapter_url = novel_url + "/chapter-" + chapter_number;
+        let chapter_url = novel_url + "chapter-" + chapter_number;
         // Do the scrape
         console.log(chapter_url);
         await axios.get(url.parse(chapter_url, true)).then(async (response) => {
