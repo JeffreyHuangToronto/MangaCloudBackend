@@ -39,11 +39,11 @@ async function getChapterDetails(novel_url, chapter_number) {
             });
         });
 
-        console.log("Checking for bad input", DATABASE_CHAPTER_DETAILS.chapter_title, " - ", DATABASE_CHAPTER_DETAILS.chapter_content.length());
-        if (DATABASE_CHAPTER_DETAILS.chapter_title == "") return {};
-        if (DATABASE_CHAPTER_DETAILS.chapter_content.length() == 0) return {};
+        // console.log("Checking for bad input", DATABASE_CHAPTER_DETAILS.chapter_title, " - ", DATABASE_CHAPTER_DETAILS.chapter_content.length());
+        // if (DATABASE_CHAPTER_DETAILS.chapter_title == "") return {};
+        // if (DATABASE_CHAPTER_DETAILS.chapter_content.length() == 0) return {};
 
-        console.log("Returning");
+        console.log("Adding chapter to our database -", DATABASE_CHAPTER_DETAILS.chapter_title, "Chapter", chapter_number);
         const db1 = client
             .db("NAMS")
             .collection("CHAPTERS")
@@ -52,6 +52,7 @@ async function getChapterDetails(novel_url, chapter_number) {
                 console.log("[GetChapter - Save] Error found trying to add new novel entry.", err);
             });
 
+        console.log("Returning scraped content.");
         return { chapter_title: DATABASE_CHAPTER_DETAILS.chapter_title, chapter_content: DATABASE_CHAPTER_DETAILS.chapter_content };
     } else {
         // We have the chapter in our database
