@@ -26,16 +26,18 @@ async function getChapterDetails(novel_url, chapter_number) {
         await axios.get(url.parse(chapter_url, true)).then(async (response) => {
             const $ = cheerio.load(response.data); // Load the page
             console.log("Scraping for chapter content!");
-            // Get Chapter Title Working
-            if ($("div.cha-tit > h3").text() != null) {
+            // Get Chapter Title 1
+            if ($("div.cha-tit > h3").text() != "") {
                 DATABASE_CHAPTER_DETAILS.chapter_title = $("div > div.cha-tit > h3").text();
-                // console.log($("div > div.cha-tit > h3").text());
+                console.log("Chapter Title Selector 1: ", $("div > div.cha-tit > h3").text());
             }
             // Get Chapter Title 2
-            if ($("div.reading-content > div > p:nth-child(1) > strong").text() != null) {
-                DATABASE_CHAPTER_DETAILS.chapter_title = $("div > div.cha-tit > h3").text();
-                // console.log($("div > div.cha-tit > h3").text());
+            if ($("div.reading-content > div > p:nth-child(1) > strong").text() != "") {
+                DATABASE_CHAPTER_DETAILS.chapter_title = $("div.reading-content > div > p:nth-child(1) > strong").text();
+                console.log("Chapter Title Selector 2: ", $("div.reading-content > div > p:nth-child(1) > strong").text());
             }
+
+            // console.log($("div.reading-content > div > p:nth-child(1) > strong").text());
 
             // Get Paragraphs
             $("div.cha-content > div > p").each((index, p) => {
@@ -50,18 +52,18 @@ async function getChapterDetails(novel_url, chapter_number) {
             });
         });
 
-        console.log("Checking for bad input", DATABASE_CHAPTER_DETAILS.chapter_title);
+        console.log("Checking for bad input - Title: ", DATABASE_CHAPTER_DETAILS.chapter_title);
         if (DATABASE_CHAPTER_DETAILS.chapter_title == "") return { Error: "We could not find the chapter title." };
-        if (DATABASE_CHAPTER_DETAILS.chapter_content[0].length() == 0) return { Error: "We could not find the content." };
+        if (DATABASE_CHAPTER_DETAILS.chapter_content.length == 0) return { Error: "We could not find the content." };
 
         console.log("Adding chapter to our database -", DATABASE_CHAPTER_DETAILS.chapter_title, "Chapter", chapter_number);
-        const db1 = client
-            .db("NAMS")
-            .collection("CHAPTERS")
-            .insertOne(DATABASE_CHAPTER_DETAILS)
-            .catch((err) => {
-                console.log("[GetChapter - Save] Error found trying to add new novel entry.", err);
-            });
+        // const db1 = client
+        //     .db("NAMS")
+        //     .collection("CHAPTERS")
+        //     .insertOne(DATABASE_CHAPTER_DETAILS)
+        //     .catch((err) => {
+        //         console.log("[GetChapter - Save] Error found trying to add new novel entry.", err);
+        //     });
 
         console.log("Returning scraped content.");
         return { chapter_title: DATABASE_CHAPTER_DETAILS.chapter_title, chapter_content: DATABASE_CHAPTER_DETAILS.chapter_content };
