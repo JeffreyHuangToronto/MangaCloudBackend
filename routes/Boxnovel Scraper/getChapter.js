@@ -70,7 +70,7 @@ async function getChapterDetails(novel_url, chapter_number) {
  *      chapter_content: ["P1", "P2", ...];
  *  }
  */
-router.get("/", async function (req, res, next) {
+router.post("/", async function (req, res, next) {
     let novel_url = req.body.novel_url;
     let chapter_number = req.body.chapter_number;
 
