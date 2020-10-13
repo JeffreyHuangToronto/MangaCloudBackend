@@ -73,7 +73,7 @@ async function getChapterDetails(novel_url, chapter_number) {
 router.post("/", async function (req, res, next) {
     let novel_url = req.body.novel_url;
     let chapter_number = req.body.chapter_number;
-
+    console.log(novel_url, chapter_number);
     // Find chapter in our database
     res.send(JSON.stringify(await getChapterDetails(novel_url, chapter_number)));
     res.end();
