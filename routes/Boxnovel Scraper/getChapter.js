@@ -25,7 +25,7 @@ async function getChapterDetails(novel_url, chapter_number) {
         console.log(chapter_url);
         await axios.get(url.parse(chapter_url, true)).then(async (response) => {
             const $ = cheerio.load(response.data); // Load the page
-
+            console.log("Scraping for chapter content!");
             // Get Chapter Title Working
             if ($("div.cha-tit > h3").text() != null) {
                 DATABASE_CHAPTER_DETAILS.chapter_title = $("div > div.cha-tit > h3").text();
