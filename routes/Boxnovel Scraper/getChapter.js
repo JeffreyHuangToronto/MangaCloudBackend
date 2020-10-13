@@ -45,9 +45,9 @@ async function getChapterDetails(novel_url, chapter_number) {
             });
         });
 
-        console.log("Checking for bad input", DATABASE_CHAPTER_DETAILS.chapter_title, " - ", DATABASE_CHAPTER_DETAILS.chapter_content.length());
+        console.log("Checking for bad input", DATABASE_CHAPTER_DETAILS.chapter_title);
         if (DATABASE_CHAPTER_DETAILS.chapter_title == "") return { Error: "We could not find the chapter title." };
-        if (DATABASE_CHAPTER_DETAILS.chapter_content.length() == 0) return { Error: "We could not find the content." };
+        if (DATABASE_CHAPTER_DETAILS.chapter_content[0].length() == 0) return { Error: "We could not find the content." };
 
         console.log("Adding chapter to our database -", DATABASE_CHAPTER_DETAILS.chapter_title, "Chapter", chapter_number);
         const db1 = client
