@@ -31,6 +31,11 @@ async function getChapterDetails(novel_url, chapter_number) {
                 DATABASE_CHAPTER_DETAILS.chapter_title = $("div > div.cha-tit > h3").text();
                 // console.log($("div > div.cha-tit > h3").text());
             }
+            // Get Chapter Title 2
+            if ($("div.reading-content > div > p:nth-child(1) > strong").text() != null) {
+                DATABASE_CHAPTER_DETAILS.chapter_title = $("div > div.cha-tit > h3").text();
+                // console.log($("div > div.cha-tit > h3").text());
+            }
 
             // Get Paragraphs
             $("div.cha-content > div > p").each((index, p) => {
