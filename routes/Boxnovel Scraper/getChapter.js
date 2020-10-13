@@ -22,9 +22,13 @@ async function getChapterDetails(novel_url, chapter_number) {
     if (queryChapter == null) {
         let chapter_url = novel_url + "chapter-" + chapter_number;
         // Do the scrape
-        console.log(chapter_url);
+        // console.log(chapter_url);
         await axios.get(url.parse(chapter_url, true)).then(async (response) => {
             const $ = cheerio.load(response.data); // Load the page
+
+            if ($("div > div.reading-content > div") == null) {
+                return { Error: "No Content" };
+            }
             console.log("Scraping for chapter content!");
             // Get Chapter Title 1
             if ($("div.cha-tit > h3").text() != "") {
@@ -37,7 +41,11 @@ async function getChapterDetails(novel_url, chapter_number) {
                 console.log("Chapter Title Selector 2: ", $("div.reading-content > div > p:nth-child(1) > strong").text());
             }
 
-            // console.log($("div.reading-content > div > p:nth-child(1) > strong").text());
+            // Get Chapter Title 3
+            if ($("div.cha-tit.skiptranslate > div > h3").text() != "") {
+                DATABASE_CHAPTER_DETAILS.chapter_title = $("div.cha-tit.skiptranslate > div > h3").text();
+                console.log("Chapter Title Selector 3: ", $("div.cha-tit.skiptranslate > div > h3").text());
+            }
 
             // Get Paragraphs
             $("div.cha-content > div > p").each((index, p) => {
@@ -50,14 +58,20 @@ async function getChapterDetails(novel_url, chapter_number) {
                 let paragraph = $(p).text();
                 DATABASE_CHAPTER_DETAILS.chapter_content.push(paragraph);
             });
+
+            // Get Paragraphs
+            $("div.reading-content > div > div.cha-content > div").each((index, p) => {
+                let paragraph = $(p).text();
+                DATABASE_CHAPTER_DETAILS.chapter_content.push(paragraph);
+            });
         });
 
         console.log("Checking for bad input - Title: ", DATABASE_CHAPTER_DETAILS.chapter_title);
         if (DATABASE_CHAPTER_DETAILS.chapter_title == "") return { Error: "We could not find the chapter title." };
         if (DATABASE_CHAPTER_DETAILS.chapter_content.length == 0) return { Error: "We could not find the content." };
-
+        console.log("Seems like we don't have any bad input.");
         console.log("Adding chapter to our database -", DATABASE_CHAPTER_DETAILS.chapter_title, "Chapter", chapter_number);
-        // const db1 = client
+        // client
         //     .db("NAMS")
         //     .collection("CHAPTERS")
         //     .insertOne(DATABASE_CHAPTER_DETAILS)
