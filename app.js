@@ -19,6 +19,7 @@ var DATABASE_SAVE_CHAPTER = require("./routes/Database/Save/saveChapter");
 var DATABASE_GET_NOVEL_LIST = require("./routes/Database/Retrieve/getNovelList");
 var DATABASE_GET_NOVEL = require("./routes/Database/Retrieve/getNovel");
 
+var BOXNOVEL_SCRAPE_NOVEL_CHAPTER = require("./routes/Boxnovel Scraper/getChapter");
 var BOXNOVEL_SCRAPE_NOVEL_DETAILS = require("./routes/Boxnovel Scraper/scrapeNovelDetails");
 var BOXNOVEL_SCRAPE_ALL_NOVELS = require("./routes/Boxnovel Scraper/scrapeAllNovels");
 
@@ -42,6 +43,7 @@ app.use("/DATABASE/SAVECHAPTER", DATABASE_SAVE_CHAPTER);
 app.use("/DATABASE/GETNOVELLIST", DATABASE_GET_NOVEL_LIST);
 app.use("/DATABASE/GETNOVEL", DATABASE_GET_NOVEL);
 
+app.use("/SCRAPE/BOXNOVEL/GETCHAPTER", BOXNOVEL_SCRAPE_NOVEL_CHAPTER);
 app.use("/SCRAPE/BOXNOVEL/ALLNOVELS", BOXNOVEL_SCRAPE_ALL_NOVELS);
 app.use("/SCRAPE/BOXNOVEL/NOVELDETAILS", BOXNOVEL_SCRAPE_NOVEL_DETAILS);
 
