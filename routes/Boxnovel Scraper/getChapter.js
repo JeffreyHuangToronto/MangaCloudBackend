@@ -17,7 +17,7 @@ async function getChapterDetails(novel_url, chapter_number) {
         chapter_title: "",
         chapter_content: [],
     };
-
+    console.log(novel_url);
     const queryChapter = await client.db("NAMS").collection("CHAPTERS").findOne({ _id: DATABASE_CHAPTER_DETAILS._id });
     if (queryChapter == null) {
         let chapter_url = novel_url + "chapter-" + chapter_number;
@@ -40,7 +40,7 @@ async function getChapterDetails(novel_url, chapter_number) {
         });
 
         if (DATABASE_CHAPTER_DETAILS.chapter_title == "") return {};
-        if (DATABASE_CHAPTER_DETAILS.chapter_content == []) return {};
+        if (DATABASE_CHAPTER_DETAILS.chapter_content.length() == 0) return {};
 
         const db1 = client
             .db("NAMS")
