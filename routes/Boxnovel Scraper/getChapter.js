@@ -39,9 +39,11 @@ async function getChapterDetails(novel_url, chapter_number) {
             });
         });
 
+        console.log("Checking for bad input", DATABASE_CHAPTER_DETAILS.chapter_title, " - ", DATABASE_CHAPTER_DETAILS.chapter_content.length());
         if (DATABASE_CHAPTER_DETAILS.chapter_title == "") return {};
         if (DATABASE_CHAPTER_DETAILS.chapter_content.length() == 0) return {};
 
+        console.log("Returning");
         const db1 = client
             .db("NAMS")
             .collection("CHAPTERS")
