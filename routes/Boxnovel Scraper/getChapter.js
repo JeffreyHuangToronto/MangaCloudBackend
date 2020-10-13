@@ -31,17 +31,23 @@ async function getChapterDetails(novel_url, chapter_number) {
                 DATABASE_CHAPTER_DETAILS.chapter_title = $("div > div.cha-tit > h3").text();
                 // console.log($("div > div.cha-tit > h3").text());
             }
+
             // Get Paragraphs
             $("div.cha-content > div > p").each((index, p) => {
                 let paragraph = $(p).text();
-                // console.log(paragraph);
+                DATABASE_CHAPTER_DETAILS.chapter_content.push(paragraph);
+            });
+
+            // Get Paragraphs
+            $("div.reading-content > div > p").each((index, p) => {
+                let paragraph = $(p).text();
                 DATABASE_CHAPTER_DETAILS.chapter_content.push(paragraph);
             });
         });
 
-        // console.log("Checking for bad input", DATABASE_CHAPTER_DETAILS.chapter_title, " - ", DATABASE_CHAPTER_DETAILS.chapter_content.length());
-        // if (DATABASE_CHAPTER_DETAILS.chapter_title == "") return {};
-        // if (DATABASE_CHAPTER_DETAILS.chapter_content.length() == 0) return {};
+        console.log("Checking for bad input", DATABASE_CHAPTER_DETAILS.chapter_title, " - ", DATABASE_CHAPTER_DETAILS.chapter_content.length());
+        if (DATABASE_CHAPTER_DETAILS.chapter_title == "") return { Error: "We could not find the chapter title." };
+        if (DATABASE_CHAPTER_DETAILS.chapter_content.length() == 0) return { Error: "We could not find the content." };
 
         console.log("Adding chapter to our database -", DATABASE_CHAPTER_DETAILS.chapter_title, "Chapter", chapter_number);
         const db1 = client
