@@ -67,7 +67,9 @@ async function getChapterDetails(novel_url, chapter_number) {
         });
 
         console.log("Checking for bad input - Title: ", DATABASE_CHAPTER_DETAILS.chapter_title);
-        if (DATABASE_CHAPTER_DETAILS.chapter_title == "") return { Error: "We could not find the chapter title." };
+        if (DATABASE_CHAPTER_DETAILS.chapter_title == "") {
+            DATABASE_CHAPTER_DETAILS.chapter_title = `Chapter ${chapter_number}`;
+        }
         if (DATABASE_CHAPTER_DETAILS.chapter_content.length == 0) return { Error: "We could not find the content." };
         console.log("Seems like we don't have any bad input.");
         console.log("Adding chapter to our database -", DATABASE_CHAPTER_DETAILS.chapter_title, "Chapter", chapter_number);
