@@ -18,6 +18,7 @@ async function collectDetails($, novel_url) {
     };
     // Database Novel Title
     body._id = url.parse(novel_url, true).pathname.split("/")[2];
+    console.log("ID:", body._id);
 
     // Novel Title
     $("div.post-title > h3").each(async (index, element) => {
