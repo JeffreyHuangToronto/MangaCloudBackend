@@ -4,7 +4,7 @@ const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const url = require("url");
-const api_url = process.env.API_URL || "localhost:3001";
+const api_url = process.env.API_URL || "http://localhost:3001";
 var router = express.Router();
 
 async function collectDetails($, novel_url) {
