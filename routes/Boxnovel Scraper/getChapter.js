@@ -48,20 +48,20 @@ async function getChapterDetails(novel_url, chapter_number) {
             });
         }
 
-        console.log("Checking for bad input - Title: |", DATABASE_CHAPTER_DETAILS.chapter_title, "|");
+        // console.log("Checking for bad input - Title: |", DATABASE_CHAPTER_DETAILS.chapter_title, "|");
         if (DATABASE_CHAPTER_DETAILS.chapter_title == "") {
             DATABASE_CHAPTER_DETAILS.chapter_title = `Chapter ${chapter_number}`;
         }
         if (DATABASE_CHAPTER_DETAILS.chapter_content.length == 0) return { Error: "We could not find the content." };
         // console.log("Seems like we don't have any bad input.");
-        console.log("Adding chapter to our database -", DATABASE_CHAPTER_DETAILS.chapter_title, "Chapter", chapter_number);
-        client
-            .db("NAMS")
-            .collection("CHAPTERS")
-            .insertOne(DATABASE_CHAPTER_DETAILS)
-            .catch((err) => {
-                console.log("[GetChapter - Save] Error found trying to add new novel entry.", err);
-            });
+        // console.log("Adding chapter to our database -", DATABASE_CHAPTER_DETAILS.chapter_title, "Chapter", chapter_number);
+        // client
+        //     .db("NAMS")
+        //     .collection("CHAPTERS")
+        //     .insertOne(DATABASE_CHAPTER_DETAILS)
+        //     .catch((err) => {
+        //         console.log("[GetChapter - Save] Error found trying to add new novel entry.", err);
+        //     });
 
         // console.log("Returning scraped content.");
         return { chapter_title: DATABASE_CHAPTER_DETAILS.chapter_title, chapter_content: DATABASE_CHAPTER_DETAILS.chapter_content };
@@ -89,6 +89,11 @@ async function scrapeContent(DATABASE_CHAPTER_DETAILS, $) {
         // console.log("Chapter Title Selector 3: ", $("div.cha-tit.skiptranslate > div > h3").text());
     }
 
+    // Get Chapter Title 4
+    if ($("div.reading-content > div > h1").text() != "") {
+        DATABASE_CHAPTER_DETAILS.chapter_title = $("div.reading-content > div > h1").text();
+        // console.log("Chapter Title Selector 4: ", $("div.reading-content > div > h1").text());
+    }
     // Get Paragraphs
     $("div.cha-content > div > p").each((index, p) => {
         let paragraph = $(p).text();
@@ -103,6 +108,12 @@ async function scrapeContent(DATABASE_CHAPTER_DETAILS, $) {
 
     // Get Paragraphs
     $("div.reading-content > div > div.cha-content > div").each((index, p) => {
+        let paragraph = $(p).text();
+        DATABASE_CHAPTER_DETAILS.chapter_content.push(paragraph);
+    });
+
+    // Get Paragraphs
+    $("div.reading-content > div > div > p").each((index, p) => {
         let paragraph = $(p).text();
         DATABASE_CHAPTER_DETAILS.chapter_content.push(paragraph);
     });
@@ -121,7 +132,7 @@ async function scrapeContent(DATABASE_CHAPTER_DETAILS, $) {
 router.post("/", async function (req, res, next) {
     let novel_url = req.body.novel_url;
     let chapter_number = req.body.chapter_number;
-    console.log(novel_url, chapter_number);
+    // console.log(novel_url, chapter_number);
     // Find chapter in our database
 
     res.send(JSON.stringify(await getChapterDetails(novel_url, chapter_number)));
