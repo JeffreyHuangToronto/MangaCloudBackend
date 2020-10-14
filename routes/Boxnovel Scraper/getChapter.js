@@ -71,13 +71,13 @@ async function getChapterDetails(novel_url, chapter_number) {
         if (DATABASE_CHAPTER_DETAILS.chapter_content.length == 0) return { Error: "We could not find the content." };
         console.log("Seems like we don't have any bad input.");
         console.log("Adding chapter to our database -", DATABASE_CHAPTER_DETAILS.chapter_title, "Chapter", chapter_number);
-        // client
-        //     .db("NAMS")
-        //     .collection("CHAPTERS")
-        //     .insertOne(DATABASE_CHAPTER_DETAILS)
-        //     .catch((err) => {
-        //         console.log("[GetChapter - Save] Error found trying to add new novel entry.", err);
-        //     });
+        client
+            .db("NAMS")
+            .collection("CHAPTERS")
+            .insertOne(DATABASE_CHAPTER_DETAILS)
+            .catch((err) => {
+                console.log("[GetChapter - Save] Error found trying to add new novel entry.", err);
+            });
 
         console.log("Returning scraped content.");
         return { chapter_title: DATABASE_CHAPTER_DETAILS.chapter_title, chapter_content: DATABASE_CHAPTER_DETAILS.chapter_content };
