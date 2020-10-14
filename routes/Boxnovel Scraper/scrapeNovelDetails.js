@@ -4,7 +4,7 @@ const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const url = require("url");
-const api_url = process.env.API_URL;
+const api_url = process.env.API_URL || "localhost:3001";
 var router = express.Router();
 
 async function collectDetails($, novel_url) {
@@ -87,7 +87,6 @@ router.post("/", async function (req, res, next) {
     await axios
         .get(req.body.novel_url)
         .then(async (response) => {
-            console.log("TEST");
             await collectDetails(cheerio.load(response.data), req.body.novel_url);
         })
         .catch((err) => {
