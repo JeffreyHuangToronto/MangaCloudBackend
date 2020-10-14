@@ -18,13 +18,11 @@ async function collectDetails($, novel_url) {
     };
     // Database Novel Title
     body._id = url.parse(novel_url, true).pathname.split("/")[2];
-    console.log("ID:", body._id);
 
-    // Novel Title
     $("div.post-title > h3").each(async (index, element) => {
         // Working
         if ($(element).text != null) {
-            body.novel_title = $(element).text().trim(" ");
+            body.novel_title = $(element).text().replace("NEW", "").replace("HOT", "").trim(" ");
         }
     });
     // Summary
@@ -61,9 +59,9 @@ async function collectDetails($, novel_url) {
         body.cover_url = "https://boxnovel.com/wp-content/uploads/2019/05/boxnovel-193x278.jpg";
     }
     // console.log("Body ID:", body._id);
-    await axios.post(api_url + "/database/saveNovel", body).catch(function (error) {
-        console.log("[ScrapeNovelDetails] Error found while sending request to save novel details.");
-    });
+    // await axios.post(api_url + "/database/saveNovel", body).catch(function (error) {
+    //     console.log("[ScrapeNovelDetails] Error found while sending request to save novel details.");
+    // });
 }
 
 /**
