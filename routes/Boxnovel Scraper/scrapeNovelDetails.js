@@ -41,11 +41,12 @@ async function collectDetails($, novel_url) {
     });
 
     // Summary
-    $("div.summary__content.show-more.active > div > p").each(async (index, element) => {
+    $("div.summary__content.show-more > div").each(async (index, element) => {
         if ($(element).text != null) {
             body.summary.push($(element).text().trim(" "));
         }
     });
+
     // Latest Chapter
     $("div.page-content-listing.single-page > div > ul > li:nth-child(1) > a").each(async (index, element) => {
         total_chapters = Number($(element).text().trim().split(" ")[1]);
@@ -86,10 +87,11 @@ router.post("/", async function (req, res, next) {
     await axios
         .get(req.body.novel_url)
         .then(async (response) => {
+            console.log("TEST");
             await collectDetails(cheerio.load(response.data), req.body.novel_url);
         })
         .catch((err) => {
-            console.log("[ScrapeNovelDetails] Error found while scraping novel details");
+            console.log("[ScrapeNovelDetails] Error found while scraping novel details", err);
         });
     res.send("Received!");
 });
