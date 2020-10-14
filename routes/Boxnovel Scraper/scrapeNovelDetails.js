@@ -39,6 +39,13 @@ async function collectDetails($, novel_url) {
             body.summary.push($(element).text().trim(" "));
         }
     });
+
+    // Summary
+    $("div.summary__content.show-more.active > div > p").each(async (index, element) => {
+        if ($(element).text != null) {
+            body.summary.push($(element).text().trim(" "));
+        }
+    });
     // Latest Chapter
     $("div.page-content-listing.single-page > div > ul > li:nth-child(1) > a").each(async (index, element) => {
         total_chapters = Number($(element).text().trim().split(" ")[1]);
