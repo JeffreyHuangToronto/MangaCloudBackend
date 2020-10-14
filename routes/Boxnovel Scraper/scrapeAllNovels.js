@@ -13,7 +13,7 @@ router.get("/", async function (req, res, next) {
     const PAGES = 63; // Manually Found
     for (var i = 0; i <= PAGES; i++) {
         console.log("Looking at page", i);
-        axios
+        await axios
             .get(`https://boxnovel.com/novel/page/${i}/?m_orderby=alphabet`)
             .then(async (response) => {
                 const $ = cheerio.load(response.data); // Load the page

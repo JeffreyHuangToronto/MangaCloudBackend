@@ -27,14 +27,25 @@ async function saveNewNovel(novel_title, cover_url, total_chapters, summary, _id
             .catch((err) => {
                 console.log("[SaveNovel] Error found trying to add new novel entry.", err);
             });
-    } else if (queryNovel.total_chapters != DATABASE_NOVEL_DETAILS.total_chapters) {
-        const db2 = await client
-            .db("NAMS")
-            .collection("NOVELS")
-            .updateOne({ _id: DATABASE_NOVEL_DETAILS._id }, { $set: { total_chapters: DATABASE_NOVEL_DETAILS.total_chapters } })
-            .catch(() => {
-                console.log("[SaveNovel] Error found trying to update novel entry.");
-            });
+    } else {
+        if (queryNovel.total_chapters != DATABASE_NOVEL_DETAILS.total_chapters) {
+            const db2 = await client
+                .db("NAMS")
+                .collection("NOVELS")
+                .updateOne({ _id: DATABASE_NOVEL_DETAILS._id }, { $set: { total_chapters: DATABASE_NOVEL_DETAILS.total_chapters } })
+                .catch(() => {
+                    console.log("[SaveNovel] Error found trying to update novel entry.");
+                });
+        }
+        if (queryNovel.summary[0] != DATABASE_NOVEL_DETAILS.summary[0]) {
+            const db3 = await client
+                .db("NAMS")
+                .collection("NOVELS")
+                .updateOne({ _id: DATABASE_NOVEL_DETAILS._id }, { $set: { summary: DATABASE_NOVEL_DETAILS.summary } })
+                .catch(() => {
+                    console.log("[SaveNovel] Error found trying to update novel entry.");
+                });
+        }
     }
 }
 
@@ -51,7 +62,7 @@ var router = express.Router();
 router.post("/", async function (req, res, next) {
     const { novel_title, cover_url, total_chapters, summary, _id, novel_url } = req.body;
 
-    await saveNewNovel(novel_title, cover_url, total_chapters, summary, _id, novel_url);
+    saveNewNovel(novel_title, cover_url, total_chapters, summary, _id, novel_url);
 
     res.send("Request recieved successfully.");
     res.end();
