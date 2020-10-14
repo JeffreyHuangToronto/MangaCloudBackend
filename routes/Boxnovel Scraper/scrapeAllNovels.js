@@ -11,7 +11,7 @@ var router = express.Router();
 
 router.get("/", async function (req, res, next) {
     const PAGES = 63; // Manually Found
-    for (var i = 0; i <= 2; i++) {
+    for (var i = 0; i <= PAGES; i++) {
         console.log("Looking at page", i);
         await axios
             .get(`https://boxnovel.com/novel/page/${i}/?m_orderby=alphabet`)
