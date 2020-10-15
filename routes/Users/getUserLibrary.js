@@ -8,7 +8,7 @@ var router = express.Router();
 router.get("/", async function (req, res, next) {
     console.log("Params: ", req.query.userId);
     if (req.query.userId == null || isNaN(req.query.userId) || req.query.userId == "") {
-        // console.log("Not a number");
+        console.log("Not a number");
         res.send({ Error: `userId: ${req.query.userId} is not a number.` });
     } else {
         res.json(await getUserLibrary(req.query.userId));
