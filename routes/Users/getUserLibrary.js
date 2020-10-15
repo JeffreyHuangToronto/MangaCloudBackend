@@ -5,13 +5,10 @@ const client = require("../Database/connectDatabase"); // Connect to database
 
 var router = express.Router();
 
-/**
- *  If you call this endpoint you need to add a body with
- **/
 router.get("/", async function (req, res, next) {
     console.log("Params: ", req.query.userId);
     if (req.query.userId == null || isNaN(req.query.userId) || req.query.userId == "") {
-        console.log("Not a number");
+        // console.log("Not a number");
         res.send({ Error: `userId: ${req.query.userId} is not a number.` });
     } else {
         res.json(await getUserLibrary(req.query.userId));

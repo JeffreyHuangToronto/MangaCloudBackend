@@ -12,7 +12,7 @@ async function collectDetails($, novel_url) {
         _id: "",
         novel_title: "",
         novel_url: novel_url,
-        cover_url: "",
+        cover_url: "https://boxnovel.com/wp-content/uploads/2019/05/boxnovel-193x278.jpg",
         total_chapters: 0,
         summary: [],
     };
@@ -62,10 +62,6 @@ async function collectDetails($, novel_url) {
         body.cover_url = $(element).attr("src");
     });
 
-    // If there is no cover use a not found image
-    if (body.cover_url == null) {
-        body.cover_url = "https://boxnovel.com/wp-content/uploads/2019/05/boxnovel-193x278.jpg";
-    }
     // console.log("Body ID:", body._id);
     await axios.post(api_url + "/database/saveNovel", body).catch(function (error) {
         console.log("[ScrapeNovelDetails] Error found while sending request to save novel details.");

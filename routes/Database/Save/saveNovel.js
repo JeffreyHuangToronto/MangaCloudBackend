@@ -37,6 +37,15 @@ async function saveNewNovel(novel_title, cover_url, total_chapters, summary, _id
                     console.log("[SaveNovel] Error found trying to update novel entry.");
                 });
         }
+        if (queryNovel.cover_url != DATABASE_NOVEL_DETAILS.cover_url) {
+            const db3 = await client
+                .db("NAMS")
+                .collection("NOVELS")
+                .updateOne({ _id: DATABASE_NOVEL_DETAILS._id }, { $set: { cover_url: DATABASE_NOVEL_DETAILS.cover_url } })
+                .catch(() => {
+                    console.log("[SaveNovel] Error found trying to update novel entry.");
+                });
+        }
         if (queryNovel.summary[0] != DATABASE_NOVEL_DETAILS.summary[0]) {
             const db3 = await client
                 .db("NAMS")
