@@ -27,6 +27,7 @@ var BOXNOVEL_SCRAPE_ALL_NOVELS = require("./routes/Boxnovel Scraper/scrapeAllNov
 var USER_GET_LIBRARY = require("./routes/Users/getUserLibrary");
 var USER_LIBRARY_ADD_NOVEL = require("./routes/Users/addNovelToLibrary");
 var USER_LIBRARY_REMOVE_NOVEL = require("./routes/Users/removeNovelFromLibrary");
+var USER_LIBRARY_SET_NOVEL_CHAPTER = require("./routes/Users/setChapter");
 
 var app = express();
 
@@ -56,6 +57,7 @@ app.use("/SCRAPE/BOXNOVEL/NOVELDETAILS", BOXNOVEL_SCRAPE_NOVEL_DETAILS);
 app.use("/USER/LIBRARY", USER_GET_LIBRARY);
 app.use("/USER/LIBRARY/ADDNOVEL", USER_LIBRARY_ADD_NOVEL);
 app.use("/USER/LIBRARY/REMOVENOVEL", USER_LIBRARY_REMOVE_NOVEL);
+app.use("/USER/LIBRARY/SETCHAPTER", USER_LIBRARY_SET_NOVEL_CHAPTER);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
