@@ -16,36 +16,53 @@ async function collectDetails($, novel_url) {
         total_chapters: 0,
         summary: [],
     };
+
+    let titleFound = false;
+    let summaryFound = false;
+    let latestChapterFound = false;
     // Database Novel Title
     body._id = url.parse(novel_url, true).pathname.split("/")[2];
 
-    $("div.post-title > h3").each(async (index, element) => {
-        // Working
-        if ($(element).text != null) {
-            body.novel_title = $(element).text().replace("NEW", "").replace("HOT", "").trim(" ");
-        }
-    });
-    // Summary
-    $("#editdescription > p").each(async (index, element) => {
-        // Working
-        if ($(element).text != null) {
-            body.summary.push($(element).text().trim(" "));
-        }
-    });
+    if (!titleFound) {
+        $("div.post-title > h3").each(async (index, element) => {
+            // Working
+            titleFound = true;
+            if ($(element).text != null) {
+                body.novel_title = $(element).text().replace("NEW", "").replace("HOT", "").trim(" ");
+            }
+        });
+    }
 
     // Summary
-    $("div.summary__content > p").each(async (index, element) => {
-        if ($(element).text != null) {
-            body.summary.push($(element).text().trim(" "));
-        }
-    });
+    if (!summaryFound) {
+        $("#editdescription > p").each(async (index, element) => {
+            // Working
+            if ($(element).text != null) {
+                body.summary.push($(element).text().trim(" "));
+                summaryFound = true;
+            }
+        });
+    }
 
     // Summary
-    $("div.summary__content.show-more > div").each(async (index, element) => {
-        if ($(element).text != null) {
-            body.summary.push($(element).text().trim(" "));
-        }
-    });
+    if (!summaryFound) {
+        $("div.summary__content > p").each(async (index, element) => {
+            if ($(element).text != null) {
+                body.summary.push($(element).text().trim(" "));
+                summaryFound = true;
+            }
+        });
+    }
+
+    if (!summaryFound) {
+        // Summary
+        $("div.summary__content.show-more > div").each(async (index, element) => {
+            if ($(element).text != null) {
+                body.summary.push($(element).text().trim(" "));
+                summaryFound = true;
+            }
+        });
+    }
 
     // Latest Chapter
     $("div.page-content-listing.single-page > div > ul > li:nth-child(1) > a").each(async (index, element) => {
