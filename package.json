@@ -1,6 +1,6 @@
 {
-  "name": "react-backend",
-  "version": "0.0.0",
+  "name": "manga-cloud-backend",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "SET PORT=3001 && node ./bin/www"
