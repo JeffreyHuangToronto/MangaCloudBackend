@@ -4,6 +4,9 @@ const { default: Axios } = require("axios");
 const { MangaSources } = require("../constants/constants");
 const client = require("./DatabaseConnect"); // Connect to database
 
+const axios = require("axios");
+const cheerio = require("cheerio");
+
 async function addMangaPages(schema) {
     const Db = client.db("Manga");
     const Collection = Db.collection(`${schema.source} Chapters`);
@@ -45,33 +48,45 @@ async function getMangaChapter(source, manga_id, chapter_number) {
     return mangaChapter;
 }
 
+async function scrapeMangaDetails() {}
+
 async function saveAllManga(source) {
     if (source == MangaSources.MangaKakalot) {
-        while (true) {
+        let page_number = 1;
+        let MAX_PAGES = 2;
+        await axios
+            .get(`https://mangakakalot.tv/manga_list/?type=newest&category=all&state=all&page=${page_number}`)
+            .then(async (response) => {
+                const $ = cheerio.load(response.data); // Load the response
+                // Find the manga pages
+
+                $("div.group_page > a.page_blue.page_last").each(async (index, element) => {
+                    MAX_PAGES = Number($(element).text().replace("Last(", "").replace(")", ""));
+                });
+            })
+            .catch((err) => {});
+
+        while (page_number <= 1) {
             await axios
-                .get(``)
+                .get(`https://mangakakalot.tv/manga_list/?type=newest&category=all&state=all&page=${page_number}`)
                 .then(async (response) => {
                     const $ = cheerio.load(response.data); // Load the response
 
                     let schema = {
-                        _id: `${manga_id}-chapter-${chapter_number}`,
+                        manga_id: "",
                         source: source,
-                        manga_id: manga_id,
                         manga_title: "",
-                        manga_pages: [],
-                        number_of_manga_pages: 0,
-                        chapter_number: Number(chapter_number),
+                        chapters: [],
+                        summary: [],
                     };
-
-                    // Find the manga title
-                    $("body > div:nth-child(2) > div > div > p > span:nth-child(4) > a > span").each(async (index, element) => {
-                        schema.manga_title = $(element).text();
-                    });
 
                     // Find the manga pages
                     $("#vungdoc > img").each(async (index, element) => {
                         schema.manga_pages.push($(element).attr("data-src"));
                     });
+
+                    scrapeMangaDetails();
+
                     // Set the number of pages found
                     schema.number_of_manga_pages = schema.manga_pages.length;
                     // Validate that we found all that we wanted
@@ -85,8 +100,9 @@ async function saveAllManga(source) {
                     }
                 })
                 .catch((err) => {});
+            page_number++;
         }
     }
 }
 
-module.exports = { addMangaPages, findMangaChapter, getMangaChapter };
+module.exports = { addMangaPages, findMangaChapter, getMangaChapter, saveAllManga };

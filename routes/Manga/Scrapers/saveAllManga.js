@@ -17,7 +17,7 @@ router.get("/", async function (req, res, next) {
         res.send({ code: 404, message: "Invalid Source Detected" });
         res.end();
     }
-    DatabaseController.addMangaPages(source);
+    DatabaseController.saveAllManga(source);
     res.send({ message: "Success, please wait while we update our database!" });
     res.end();
 });
