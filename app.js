@@ -7,14 +7,8 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
-// var retrieveNovel = require("./routes/retriveNovel");
-// var saveChapterDB = require("./routes/saveChapterDB");
-// var retrieveNovelInfo = require("./routes/retrieveNovelInfo");
-// var recNovels = require("./routes/recNovels");
-// var saveRecommends = require("./routes/saveRecommends");
-
-// New System
-var SCRAPEPAGES = require("./routes/Mangakakalot Scraper/scrapePages");
+var getMangaPages = require("./routes/Manga/Scrapers/Mangakakalot Scraper/getMangaPages");
+var saveAllManga = require("./routes/Manga/Scrapers/saveAllManga");
 const { allowedNodeEnvironmentFlags } = require("process");
 
 var app = express();
@@ -31,8 +25,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 
-// New System
-app.use("/scrapepages", SCRAPEPAGES);
+app.use("/api/manga/getpages", getMangaPages);
+app.use("/api/manga/database/saveallmanga", saveAllManga);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
