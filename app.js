@@ -8,6 +8,7 @@ var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
 var getMangaPages = require("./routes/Manga/Scrapers/Mangakakalot Scraper/getMangaPages");
+var getCompletedMangaList = require("./routes/Manga/Scrapers/Mangakakalot Scraper/getCompletedMangaList");
 var saveAllManga = require("./routes/Manga/Scrapers/saveAllManga");
 const { allowedNodeEnvironmentFlags } = require("process");
 
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 
 app.use("/api/manga/getpages", getMangaPages);
+app.use("/api/manga/getcompletedlist", getCompletedMangaList);
 app.use("/api/manga/database/saveallmanga", saveAllManga);
 
 // catch 404 and forward to error handler

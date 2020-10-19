@@ -14,7 +14,7 @@ const { MangaSources } = require("../../../Constants/Constants"); // Retrieve ou
 // const SOURCE = "MangaKakalot";
 router.get("/", async function (req, res, next) {
     let source = req.query.source;
-    DatabaseController.saveAllManga(source);
+    res.send(await DatabaseController.getCompletedManga(source));
     res.end();
 });
 

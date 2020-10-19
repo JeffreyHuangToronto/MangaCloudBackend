@@ -13,7 +13,7 @@ var router = express.Router();
 const { MangaSources } = require("../../../Constants/Constants"); // Retrieve our constants
 // const SOURCE = "MangaKakalot";
 router.get("/", async function (req, res, next) {
-    let source = MangaSources.MangaKakalot;
+    let source = MangaSources.MangaKakalot.Source_Name;
     let manga_id = req.query.manga_id;
     let chapter_number = req.query.chapter_number;
 
