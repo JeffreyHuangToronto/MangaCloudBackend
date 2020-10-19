@@ -81,11 +81,7 @@ async function addManga(source, title, id, summary) {
                     };
 
                     $("div.chapter-list > div > span > a").each(async (index, element) => {
-                        let c = $(element).text().trim().replace(":", "").split(" ");
-                        let indexOfChapterNumber = c.indexOf("Chapter") + 1;
-                        // Get each chapter number
-                        // console.log();
-                        schema.chapters.push(Number(c[indexOfChapterNumber]));
+                        schema.chapters.push(Number($(element).attr("href").split("chapter_")[1]));
                     });
 
                     schema.chapters.reverse();
@@ -109,11 +105,7 @@ async function addManga(source, title, id, summary) {
                     };
 
                     $("div.chapter-list > div > span > a").each(async (index, element) => {
-                        let c = $(element).text().trim().replace(":", "").split(" ");
-                        let indexOfChapterNumber = c.indexOf("Chapter") + 1;
-                        // Get each chapter number
-                        // console.log();
-                        schema.chapters.push(Number(c[indexOfChapterNumber]));
+                        schema.chapters.push(Number($(element).attr("href").split("chapter_")[1]));
                     });
 
                     schema.chapters.reverse();
@@ -148,15 +140,10 @@ async function addCompletedManga(source, title, id, summary) {
                     };
 
                     $("div.chapter-list > div > span > a").each(async (index, element) => {
-                        let c = $(element).text().trim().replace(":", "").split(" ");
-                        let indexOfChapterNumber = c.indexOf("Chapter") + 1;
-                        // Get each chapter number
-                        // console.log();
-                        schema.chapters.push(Number(c[indexOfChapterNumber]));
+                        schema.chapters.push(Number($(element).attr("href").split("chapter_")[1]));
                     });
 
                     schema.chapters.reverse();
-                    // console.log(schema.chapters);
                     await Collection.insertOne(schema).catch((err) => {
                         console.log(err);
                     });
@@ -176,11 +163,7 @@ async function addCompletedManga(source, title, id, summary) {
                     };
 
                     $("div.chapter-list > div > span > a").each(async (index, element) => {
-                        let c = $(element).text().trim().replace(":", "").split(" ");
-                        let indexOfChapterNumber = c.indexOf("Chapter") + 1;
-                        // Get each chapter number
-                        // console.log();
-                        schema.chapters.push(Number(c[indexOfChapterNumber]));
+                        schema.chapters.push(Number($(element).attr("href").split("chapter_")[1]));
                     });
 
                     schema.chapters.reverse();
@@ -325,16 +308,30 @@ async function saveAllCompletedManga(source) {
     }
 }
 
-async function getCompletedManga(source) {
+var allCompletedMangaList = [];
+
+async function getCompletedManga(source, page) {
     const Db = client.db("Manga");
     const Collection = Db.collection(`${source} Completed`);
-
+    if (page == null) {
+        page = 0;
+    }
     // console.log(Collection.find());
-    var completedMangaList = [];
+    let completedMangaList = [];
 
-    await Collection.find().forEach((manga) => {
-        completedMangaList.push(manga);
-    });
+    console.log("Before");
+    if (allCompletedMangaList.length == 0) {
+        console.log("There's no completed list on the server!");
+        await Collection.find().forEach((manga) => {
+            allCompletedMangaList.push(manga);
+        });
+    }
+
+    console.log("After");
+
+    for (var i = page * 25; i < page * 25 + 25; i++) {
+        completedMangaList.push(allCompletedMangaList[i]);
+    }
 
     return completedMangaList;
 }
