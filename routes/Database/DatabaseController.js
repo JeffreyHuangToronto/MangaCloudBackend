@@ -10,7 +10,7 @@ const cheerio = require("cheerio");
 async function addMangaPages(schema) {
     const Db = client.db("Manga");
     const Collection = Db.collection(`${schema.source} Chapters`);
-    const CollectionManga = Db.collection(`${source}`);
+    // const CollectionManga = Db.collection(`${source}`);
     const mangaChapter = await Collection.findOne({ _id: schema._id });
 
     console.log("Schema", schema);

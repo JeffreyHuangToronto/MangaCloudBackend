@@ -60,8 +60,8 @@ async function scrapeChapter(source, manga_id, chapter_number, res) {
                 throw new Error();
             } else {
                 // We have everything we were looking for.
+                DatabaseController.addMangaPages(schema);
                 res.send(schema);
-                await DatabaseController.addMangaPages(schema);
             }
         })
         .catch((err) => {
