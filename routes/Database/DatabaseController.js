@@ -336,4 +336,16 @@ async function getCompletedManga(source, page) {
     return completedMangaList;
 }
 
-module.exports = { addMangaPages, findMangaChapter, getMangaChapter, saveAllManga, addManga, saveAllCompletedManga, getCompletedManga };
+async function search(source, query) {
+    const Db = client.db("Manga");
+    const Collection = Db.collection(`${source}`);
+
+    let searchResults = [];
+    await Collection.find({ $text: { $search: query } }).forEach((manga) => {
+        searchResults.push(manga);
+    });
+
+    return searchResults;
+}
+
+module.exports = { addMangaPages, findMangaChapter, getMangaChapter, saveAllManga, addManga, saveAllCompletedManga, getCompletedManga, search };
