@@ -15,21 +15,23 @@ const { MangaSources } = require("../../../Constants/Constants"); // Retrieve ou
 router.get("/", async function (req, res, next) {
     let source = MangaSources.MangaKakalot.Source_Name;
     let manga_id = req.query.manga_id;
-    let chapter_number = req.query.chapter_number;
+    let chapter_index = req.query.chapter_number;
 
-    if (!(await DatabaseController.findMangaChapter(source, manga_id, chapter_number))) {
+    if (!(await DatabaseController.findMangaChapter(source, manga_id, chapter_index))) {
         // Can't find the chapter
-        await scrapeChapter(source, manga_id, chapter_number, res);
+        console.log("Scraping");
+        await scrapeChapter(source, manga_id, chapter_index, res);
     } else {
         // Return the data in the database
-        res.send(await DatabaseController.getMangaChapter(source, manga_id, chapter_number));
+        console.log("DATABASE");
+        res.send(await DatabaseController.getMangaChapter(source, manga_id, chapter_index));
     }
     res.end();
 });
 
 async function scrapeChapter(source, manga_id, chapter_number, res) {
     const manga = await DatabaseController.getMangaInfo(source, manga_id);
-    // console.log("manga", manga);
+    console.log("manga", manga);
     const r_chapter_number = manga.chapters[chapter_number];
 
     await axios

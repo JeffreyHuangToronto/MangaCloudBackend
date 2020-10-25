@@ -26,7 +26,7 @@ async function addMangaPages(schema) {
 }
 
 // Return true if found false otherwise
-async function findMangaChapter(source, manga_id, chapter_number) {
+async function findMangaChapter(source, manga_id, chapter_index) {
     const Db = client.db("Manga");
     const CollectionChapters = Db.collection(`${source} Chapters`);
     const CollectionManga = Db.collection(`${source}`);
@@ -34,7 +34,7 @@ async function findMangaChapter(source, manga_id, chapter_number) {
     // console.log();
     let manga = await CollectionManga.findOne({ _id: manga_id });
     // console.log(manga.chapters);
-    let chapter_num = manga.chapters[chapter_number - 1];
+    let chapter_num = manga.chapters[chapter_index];
     let _id = `${manga_id}-chapter-${chapter_num}`;
 
     const mangaChapter = await CollectionChapters.findOne({ _id: _id });
@@ -42,7 +42,7 @@ async function findMangaChapter(source, manga_id, chapter_number) {
     return mangaChapter != null;
 }
 
-async function getMangaChapter(source, manga_id, chapter_number) {
+async function getMangaChapter(source, manga_id, chapter_index) {
     const Db = client.db("Manga");
     const CollectionChapters = Db.collection(`${source} Chapters`);
     const CollectionManga = Db.collection(`${source}`);
@@ -50,7 +50,7 @@ async function getMangaChapter(source, manga_id, chapter_number) {
     // CollectionManga.findOne({ _id: manga_id });
 
     let manga = await CollectionManga.findOne({ _id: manga_id });
-    let chapter_num = manga.chapters[chapter_number - 1];
+    let chapter_num = manga.chapters[chapter_index];
     let _id = `${manga_id}-chapter-${chapter_num}`;
 
     const mangaChapter = await CollectionChapters.findOne({ _id: _id });
