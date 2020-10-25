@@ -307,6 +307,19 @@ async function saveAllCompletedManga(source) {
         }
     }
 }
+async function getMangaInfo(source, manga_id) {
+    const Db = client.db("Manga");
+    const Collection = Db.collection(`${source}`);
+
+    var cursor;
+
+    if (allCompletedMangaList.length == 0) {
+        await Collection.find({ _id: manga_id }).forEach((manga) => {
+            cursor = manga;
+        });
+    }
+    return cursor;
+}
 
 var allCompletedMangaList = [];
 
@@ -348,4 +361,14 @@ async function search(source, query) {
     return searchResults;
 }
 
-module.exports = { addMangaPages, findMangaChapter, getMangaChapter, saveAllManga, addManga, saveAllCompletedManga, getCompletedManga, search };
+module.exports = {
+    getMangaInfo,
+    addMangaPages,
+    findMangaChapter,
+    getMangaChapter,
+    saveAllManga,
+    addManga,
+    saveAllCompletedManga,
+    getCompletedManga,
+    search,
+};

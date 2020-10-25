@@ -28,19 +28,23 @@ router.get("/", async function (req, res, next) {
 });
 
 async function scrapeChapter(source, manga_id, chapter_number, res) {
+    const manga = await DatabaseController.getMangaInfo(source, manga_id);
+    // console.log("manga", manga);
+    const r_chapter_number = manga.chapters[chapter_number];
+
     await axios
-        .get(`https://mangakakalot.tv/chapter/${manga_id}/chapter_${chapter_number.toString()}`)
+        .get(`https://mangakakalot.tv/chapter/${manga_id}/chapter_${r_chapter_number.toString()}`)
         .then(async (response) => {
             const $ = cheerio.load(response.data); // Load the response
 
             let schema = {
-                _id: `${manga_id}-chapter-${chapter_number}`,
+                _id: `${manga_id}-chapter-${r_chapter_number}`,
                 source: source,
                 manga_id: manga_id,
                 manga_title: "",
                 manga_pages: [],
                 number_of_manga_pages: 0,
-                chapter_number: Number(chapter_number),
+                chapter_number: Number(r_chapter_number),
             };
 
             // Find the manga title
