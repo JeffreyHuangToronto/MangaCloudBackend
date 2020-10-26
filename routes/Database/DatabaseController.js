@@ -81,6 +81,9 @@ async function addManga(source, title, id, summary) {
                     };
 
                     $("div.chapter-list > div > span > a").each(async (index, element) => {
+                        if (isNaN(Number($(element).attr("href").split("chapter_")[1]))) {
+                            console.log("Found one that is not a number", $(element).attr("href"));
+                        }
                         schema.chapters.push(Number($(element).attr("href").split("chapter_")[1]));
                     });
 
@@ -105,6 +108,10 @@ async function addManga(source, title, id, summary) {
                     };
 
                     $("div.chapter-list > div > span > a").each(async (index, element) => {
+                        // console.log($(element).attr("href").split("chapter_")[1]);
+                        if (isNaN(Number($(element).attr("href").split("chapter_")[1]))) {
+                            console.log("Found one that is not a number", $(element).attr("href"));
+                        }
                         schema.chapters.push(Number($(element).attr("href").split("chapter_")[1]));
                     });
 
@@ -193,11 +200,12 @@ async function saveAllManga(source) {
             })
             .catch((err) => {});
 
-        while (page_number <= 1) {
+        while (page_number <= MAX_PAGES) {
             await axios
                 .get(`https://mangakakalot.tv/manga_list/?type=newest&category=all&state=all&page=${page_number}`)
                 .then(async (response) => {
                     const $ = cheerio.load(response.data); // Load the response
+                    console.log(`Loaded page: ${page_number}`);
                     let schema = {
                         manga_id: "",
                         source: source,
