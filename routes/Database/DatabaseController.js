@@ -19,7 +19,7 @@ async function addMangaPages(schema) {
     if (mangaChapter == null) {
         console.log("Create a new database entry");
         // Create a new entry
-        await Collection.insertOne(schema).catch(() => {
+        await Collection.insertOne(schema).catch((err) => {
             console.log("Error adding manga pages");
         });
     }
@@ -28,7 +28,6 @@ async function addMangaPages(schema) {
 // Return true if found false otherwise
 async function findMangaChapter(source, manga_id, chapter_index) {
     const Db = client.db("Manga");
-    const CollectionChapters = Db.collection(`${source} Chapters`);
     const CollectionManga = Db.collection(`${source}`);
 
     // console.log();
@@ -37,6 +36,7 @@ async function findMangaChapter(source, manga_id, chapter_index) {
     let chapter_num = manga.chapters[chapter_index];
     let _id = `${manga_id}-chapter-${chapter_num}`;
 
+    const CollectionChapters = Db.collection(`${source} Chapters`);
     const mangaChapter = await CollectionChapters.findOne({ _id: _id });
 
     return mangaChapter != null;

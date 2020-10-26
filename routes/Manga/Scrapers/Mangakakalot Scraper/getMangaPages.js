@@ -61,7 +61,7 @@ async function scrapeChapter(source, manga_id, chapter_number, res) {
             // Set the number of pages found
             schema.number_of_manga_pages = schema.manga_pages.length;
             // Validate that we found all that we wanted
-            if (schema.manga_title == "" || !(schema.source in MangaSources) || chapter_number < 0 || schema.number_of_manga_pages == 0) {
+            if (schema.manga_title == "" || !(schema.source in MangaSources) || r_chapter_number < 0 || schema.number_of_manga_pages == 0) {
                 // This means that we coulnd't find either manga title or manga pages or we entered a bad chapter number or it means the page was not found
                 throw new Error();
             } else {
