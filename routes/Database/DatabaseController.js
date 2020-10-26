@@ -321,11 +321,11 @@ async function getMangaInfo(source, manga_id) {
 
     var cursor;
 
-    if (allCompletedMangaList.length == 0) {
-        await Collection.find({ _id: manga_id }).forEach((manga) => {
-            cursor = manga;
-        });
-    }
+    // if (allCompletedMangaList.length == 0) {
+    await Collection.find({ _id: manga_id }).forEach((manga) => {
+        cursor = manga;
+    });
+    // }
     return cursor;
 }
 

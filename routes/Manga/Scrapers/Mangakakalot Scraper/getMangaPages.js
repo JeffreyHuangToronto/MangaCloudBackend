@@ -29,10 +29,10 @@ router.get("/", async function (req, res, next) {
     res.end();
 });
 
-async function scrapeChapter(source, manga_id, chapter_number, res) {
+async function scrapeChapter(source, manga_id, chapter_index, res) {
     const manga = await DatabaseController.getMangaInfo(source, manga_id);
     console.log("manga", manga);
-    const r_chapter_number = manga.chapters[chapter_number];
+    const r_chapter_number = manga.chapters[Number(chapter_index)];
 
     await axios
         .get(`https://mangakakalot.tv/chapter/${manga_id}/chapter_${r_chapter_number.toString()}`)
