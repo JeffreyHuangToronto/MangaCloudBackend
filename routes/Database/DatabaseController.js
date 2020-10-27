@@ -54,7 +54,7 @@ async function getMangaChapter(source, manga_id, chapter_index) {
     let _id = `${manga_id}-chapter-${chapter_num}`;
 
     const mangaChapter = await CollectionChapters.findOne({ _id: _id });
-    // console.log("MangaChapter", mangaChapter);
+    console.log("MangaChapter", mangaChapter);
     return mangaChapter;
 }
 
