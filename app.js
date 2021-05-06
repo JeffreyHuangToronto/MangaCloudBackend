@@ -11,6 +11,7 @@ var getMangaPages = require("./routes/Manga/Scrapers/Mangakakalot Scraper/getMan
 var getCompletedMangaList = require("./routes/Manga/Scrapers/Mangakakalot Scraper/getCompletedMangaList");
 var saveAllManga = require("./routes/Manga/Scrapers/saveAllManga");
 var searchManga = require("./routes/Manga/searchManga");
+var searchMangaById = require("./routes/Manga/Scrapers/Mangakakalot Scraper/getMangaById");
 const { allowedNodeEnvironmentFlags } = require("process");
 
 var app = express();
@@ -31,6 +32,7 @@ app.use("/api/manga/getpages", getMangaPages);
 app.use("/api/manga/getcompletedlist", getCompletedMangaList);
 app.use("/api/manga/database/saveallmanga", saveAllManga);
 app.use("/api/manga/database/search", searchManga);
+app.use("/api/manga/database/searchbyid", searchMangaById);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

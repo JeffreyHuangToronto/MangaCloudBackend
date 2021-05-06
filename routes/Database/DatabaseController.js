@@ -369,6 +369,20 @@ async function search(source, query) {
     return searchResults;
 }
 
+async function getMangaById(id) {
+    const Db = client.db("Manga");
+    const Collection = Db.collection(`MangaKakalot`);
+
+    let searchResults = [];
+    await Collection.find({ _id: id }).forEach((manga) => {
+        searchResults.push(manga);
+    });
+    if (searchResults.length == 0) {
+        return null;
+    }
+    return searchResults;
+}
+
 module.exports = {
     getMangaInfo,
     addMangaPages,
@@ -379,4 +393,5 @@ module.exports = {
     saveAllCompletedManga,
     getCompletedManga,
     search,
+    getMangaById,
 };
