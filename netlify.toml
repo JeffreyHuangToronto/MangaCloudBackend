@@ -1,0 +1,7 @@
+[build]
+  functions = "app.js"
+  
+[[redirects]]
+  from = '/api/*'
+  to = '../app.js'
+  status = 200
