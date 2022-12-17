@@ -1,1 +1,1 @@
-# NovelBackend
+# MangaBackend
