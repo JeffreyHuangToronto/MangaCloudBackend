@@ -88,7 +88,7 @@ async function addManga(source, title, id, summary) {
 
           $("div.chapter-list > div > span > a").each(
             async (index, element) => {
-              console.log($(element).attr("href"));
+              //   console.log($(element).attr("href"));
               if (isNaN(Number($(element).attr("href").split("chapter-")[1]))) {
                 console.log(
                   "Found one that is not a number 2",
