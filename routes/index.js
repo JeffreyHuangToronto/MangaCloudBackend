@@ -4,10 +4,13 @@ var express = require("express");
 var router = express.Router();
 var path = require("path");
 
-var package = require("../package.json");
+// var package = require("../package.json");
 /* GET home page. */
 router.get("/", function (req, res, next) {
-    res.render("index", { title: "Manga Cloud Backend", version: package.version });
+    res.render("index", {
+        title: "Manga Cloud Backend",
+        version: 1.1,
+    });
     // res.sendFile("index.html", {
     //     root: path.join(__dirname, "../public/html"),
     // });
